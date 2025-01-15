@@ -10,6 +10,8 @@ import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PageNotFoundScreen from '../../pages/page-not-found-screen/page-not-found-screen';
 
 import { AppRoute } from '../../const';
+import PrivateRoute from '../private-root/private-root';
+import { AuthorizationStatus } from '../../const';
 
 type AppScreenProps = {
   offersCount: number;
@@ -25,11 +27,23 @@ function App({ offersCount }: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.EmptyFavorites}
-          element={<FavoritesEmptyScreen />}
+          element={
+            <PrivateRoute
+              authorizationStatus={AuthorizationStatus.NoAuth}
+            >
+              <FavoritesEmptyScreen />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Favorites}
-          element={<FavoritesScreen />}
+          element={
+            <PrivateRoute
+              authorizationStatus={AuthorizationStatus.NoAuth}
+            >
+              <FavoritesScreen />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Login}
@@ -41,7 +55,13 @@ function App({ offersCount }: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.OfferLogged}
-          element={<OfferScreen />}
+          element={
+            <PrivateRoute
+              authorizationStatus={AuthorizationStatus.NoAuth}
+            >
+              <OfferScreen />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.OfferNotLogged}
