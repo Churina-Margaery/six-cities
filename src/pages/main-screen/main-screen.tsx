@@ -1,4 +1,4 @@
-import ApartmentCard from '../../components/apartment-card';
+import ApartmentCard from '../../components/card/apartment-card';
 
 type MainScreenProps = {
   offersCount: number;
