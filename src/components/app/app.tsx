@@ -8,6 +8,7 @@ import MainEmptyScreen from '../../pages/main-empty-screen/main-empty-screen';
 import OfferNotLoggedScreen from '../../pages/offer-not-logged-screen/offer-not-logged-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PageNotFoundScreen from '../../pages/page-not-found-screen/page-not-found-screen';
+import { HelmetProvider } from 'react-helmet-async';
 
 import { AppRoute } from '../../const';
 import PrivateRoute from '../private-root/private-root';
@@ -19,60 +20,72 @@ type AppScreenProps = {
 
 function App({ offersCount }: AppScreenProps): JSX.Element {
   return (
-    <BrowserRouter>
-      < Routes >
-        <Route
-          path={AppRoute.Root}
-          element={<MainScreen offersCount={offersCount} />}
-        />
-        <Route
-          path={AppRoute.EmptyFavorites}
-          element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
-              <FavoritesEmptyScreen />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={AppRoute.Favorites}
-          element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
-              <FavoritesScreen />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={AppRoute.Login}
-          element={<LoginScreen />}
-        />
-        <Route
-          path={AppRoute.MainEmpty}
-          element={<MainEmptyScreen />}
-        />
-        <Route
-          path={AppRoute.OfferLogged}
-          element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
-              <OfferScreen />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={AppRoute.OfferNotLogged}
-          element={<OfferNotLoggedScreen />}
-        />
-        <Route
-          path="*"
-          element={<PageNotFoundScreen />}
-        />
-      </Routes >
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        < Routes >
+          <Route
+            path={AppRoute.Root}
+            element={<MainScreen offersCount={offersCount} />}
+          />
+          <Route
+            path={AppRoute.EmptyFavorites}
+            element={
+              <PrivateRoute
+                restrictedFor={AuthorizationStatus.NoAuth}
+                redirectTo={AppRoute.Login}
+              >
+                <FavoritesEmptyScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute
+                restrictedFor={AuthorizationStatus.NoAuth}
+                redirectTo={AppRoute.Login}
+              >
+                <FavoritesScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.Login}
+            element={
+              <PrivateRoute
+                restrictedFor={AuthorizationStatus.Auth}
+                redirectTo={AppRoute.Root}
+              >
+                <LoginScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.MainEmpty}
+            element={<MainEmptyScreen />}
+          />
+          <Route
+            path={`${AppRoute.OfferLogged}/:offerId`}
+            element={
+              <PrivateRoute
+                restrictedFor={AuthorizationStatus.NoAuth}
+                redirectTo={AppRoute.Login}
+              >
+                <OfferScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.OfferNotLogged}
+            element={<OfferNotLoggedScreen />}
+          />
+          <Route
+            path="*"
+            element={<PageNotFoundScreen />}
+          />
+        </Routes >
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 
