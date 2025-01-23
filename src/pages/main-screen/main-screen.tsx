@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 
 import ApartmentCard from '../../components/card/apartment-card';
+import { Offers } from '../../types/offers';
 
 type MainScreenProps = {
   offersCount: number;
+  offers: Offers;
 }
 
-function MainScreen({ offersCount }: MainScreenProps): JSX.Element {
+function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -100,12 +102,10 @@ function MainScreen({ offersCount }: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
+                {offers.map((offer, id) => {
+                  const keyValue = `${id}-${offer.id}`;
+                  return (<div key={keyValue}><ApartmentCard offer={offer} /></div>);
+                })}
               </div>
             </section>
             <div className="cities__right-section">

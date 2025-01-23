@@ -28,11 +28,11 @@ export const offer1: Offer = {
   ],
   'host': {
     'name': 'Oliver Conner',
-    'avatarUrl': 'https://url-to-image/image.png',
+    'avatarUrl': 'img/avatar-angelina.jpg',
     'isPro': false
   },
   'images': [
-    'https://url-to-image/image.png'
+    'img/apartment-01.jpg'
   ],
   'maxAdults': 4
 };
@@ -66,11 +66,11 @@ export const offer2: Offer = {
   ],
   'host': {
     'name': 'Sophie Leclair',
-    'avatarUrl': 'https://url-to-image/paris-image.png',
+    'avatarUrl': 'img/avatar-angelina.jpg',
     'isPro': true
   },
   'images': [
-    'https://url-to-image/paris-image.png'
+    'img/apartment-small-02.jpg'
   ],
   'maxAdults': 2
 };
@@ -105,11 +105,11 @@ export const offer3: Offer = {
   ],
   'host': {
     'name': 'Jan De Vries',
-    'avatarUrl': 'https://url-to-image/brussels-image.png',
+    'avatarUrl': 'img/avatar-max.jpg',
     'isPro': false
   },
   'images': [
-    'https://url-to-image/brussels-image.png'
+    'img/apartment-small-01.jpg'
   ],
   'maxAdults': 3
 };
@@ -142,11 +142,11 @@ export const offer4: Offer = {
   ],
   'host': {
     'name': 'Emily Robinson',
-    'avatarUrl': 'https://url-to-image/amsterdam-image.png',
+    'avatarUrl': 'img/avatar-max.jpg',
     'isPro': false
   },
   'images': [
-    'https://url-to-image/amsterdam-image.png'
+    'img/apartment-small-03.jpg'
   ],
   'maxAdults': 2
 };

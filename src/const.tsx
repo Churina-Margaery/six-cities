@@ -2,6 +2,8 @@ const Setting = {
   OffersCount: 318,
 };
 
+//const sixCities: string[] = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
 enum AppRoute {
   Favorites = '/favorites',
   EmptyFavorites = '/empty-favorites',
