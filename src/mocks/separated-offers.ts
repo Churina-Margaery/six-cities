@@ -151,4 +151,8 @@ export const offer4: Offer = {
   'maxAdults': 2
 };
 
+const offers: Offer[] = [offer1, offer2, offer3, offer4];
 
+export default function getOffer(): Offer {
+  return offers[Math.floor(Math.random() * offers.length)];
+}

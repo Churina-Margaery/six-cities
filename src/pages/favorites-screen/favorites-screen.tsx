@@ -1,6 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 
-function FavoritesScreen(): JSX.Element {
+import { Offers } from '../../types/offers';
+
+type FavouriteScreenProps = {
+  offers: Offers;
+}
+
+function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
   return (
     <div className="page">
       <Helmet>

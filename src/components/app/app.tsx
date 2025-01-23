@@ -14,11 +14,18 @@ import { AppRoute } from '../../const';
 import PrivateRoute from '../private-root/private-root';
 import { AuthorizationStatus } from '../../const';
 
+import { Offers } from '../../types/offers';
+import { Offer } from '../../types/separated-offers';
+import { Reviews } from '../../types/reviews';
+
 type AppScreenProps = {
   offersCount: number;
+  offers: Offers;
+  offer: Offer;
+  reviews: Reviews;
 }
 
-function App({ offersCount }: AppScreenProps): JSX.Element {
+function App({ offersCount, offers, offer, reviews }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -45,7 +52,9 @@ function App({ offersCount }: AppScreenProps): JSX.Element {
                 restrictedFor={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Login}
               >
-                <FavoritesScreen />
+                <FavoritesScreen
+                  offers={offers}
+                />
               </PrivateRoute>
             }
           />
@@ -71,13 +80,24 @@ function App({ offersCount }: AppScreenProps): JSX.Element {
                 restrictedFor={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Login}
               >
-                <OfferScreen />
+                <OfferScreen
+                  offer={offer}
+                />
               </PrivateRoute>
             }
           />
           <Route
-            path={AppRoute.OfferNotLogged}
-            element={<OfferNotLoggedScreen />}
+            path={`${AppRoute.OfferNotLogged}/:offerId`}
+            element={
+              <PrivateRoute
+                restrictedFor={AuthorizationStatus.Auth}
+                redirectTo={AppRoute.Root}
+              >
+                <OfferScreen
+                  offer={offer}
+                />
+              </PrivateRoute>
+            }
           />
           <Route
             path="*"

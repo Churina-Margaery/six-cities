@@ -1,6 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 
-function OfferScreen(): JSX.Element {
+import { Offer } from '../../types/separated-offers';
+
+type OfferScreenProps = {
+  offer: Offer;
+}
+
+function OfferScreen({ offer }: OfferScreenProps): JSX.Element {
   return (
     <div className="page">
       <Helmet>
