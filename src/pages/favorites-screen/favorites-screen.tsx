@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 
 import { Offers } from '../../types/offers';
+import { AppRoute } from '../../const';
 
 type FavouriteScreenProps = {
   offers: Offers;
@@ -68,6 +70,7 @@ function getFavoritesLocations(offers: Offers, cityName: string, iD: string): JS
 
 function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
   const uniqueCities = [...new Set(offers.map((offer) => offer.city.name))];
+  const navigate = useNavigate();
   return (
     <div className="page">
       <Helmet>
@@ -77,7 +80,7 @@ function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <a className="header__logo-link" onClick={() => navigate(AppRoute.Root)}>
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </a>
             </div>

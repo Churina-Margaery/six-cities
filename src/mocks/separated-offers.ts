@@ -32,6 +32,8 @@ export const offer1: Offer = {
     'isPro': false
   },
   'images': [
+    'img/apartment-01.jpg',
+    'img/apartment-01.jpg',
     'img/apartment-01.jpg'
   ],
   'maxAdults': 4
@@ -70,7 +72,9 @@ export const offer2: Offer = {
     'isPro': true
   },
   'images': [
-    'img/apartment-small-02.jpg'
+    'img/apartment-small-04.jpg',
+    'img/apartment-small-04.jpg',
+    'img/apartment-small-04.jpg'
   ],
   'maxAdults': 2
 };
@@ -109,7 +113,9 @@ export const offer3: Offer = {
     'isPro': false
   },
   'images': [
-    'img/apartment-small-01.jpg'
+    'img/apartment-small-03.jpg',
+    'img/apartment-small-03.jpg',
+    'img/apartment-small-03.jpg'
   ],
   'maxAdults': 3
 };
@@ -146,7 +152,9 @@ export const offer4: Offer = {
     'isPro': false
   },
   'images': [
-    'img/apartment-small-03.jpg'
+    'img/apartment-small-03.jpg',
+    'img/apartment-small-03.jpg',
+    'img/apartment-small-03.jpg',
   ],
   'maxAdults': 2
 };

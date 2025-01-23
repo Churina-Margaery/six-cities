@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 
 import ApartmentCard from '../../components/card/apartment-card';
 import { Offers } from '../../types/offers';
+import { AppRoute } from '../../const';
 
 type MainScreenProps = {
   offersCount: number;
@@ -9,6 +11,8 @@ type MainScreenProps = {
 }
 
 function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
+  const navigate = useNavigate();
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -101,7 +105,8 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
+
+              <div className="cities__places-list places__list tabs__content" onClick={() => navigate(AppRoute.Favorites)}>
                 {offers.map((offer, id) => {
                   const keyValue = `${id}-${offer.id}`;
                   return (<div key={keyValue}><ApartmentCard offer={offer} /></div>);

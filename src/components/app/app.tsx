@@ -87,6 +87,7 @@ function App({ offersCount, offers, offer, reviews }: AppScreenProps): JSX.Eleme
               >
                 <OfferScreen
                   offer={offer}
+                  reviews={reviews}
                 />
               </PrivateRoute>
             }
@@ -100,6 +101,7 @@ function App({ offersCount, offers, offer, reviews }: AppScreenProps): JSX.Eleme
               >
                 <OfferScreen
                   offer={offer}
+                  reviews={reviews}
                 />
               </PrivateRoute>
             }
