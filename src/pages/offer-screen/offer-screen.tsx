@@ -3,15 +3,26 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Offer } from '../../types/separated-offers';
+import { getOfferById, hasSuchOfferId } from '../../mocks/separated-offers';
+import { offers } from '../../mocks/separated-offers';
+import { Offers } from '../../types/offers';
 import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
+import { Navigate, useParams } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 type OfferScreenProps = {
-  offer: Offer;
+  offers1: Offers;
   reviews: Reviews;
 }
 
-function OfferScreen({ offer, reviews }: OfferScreenProps): JSX.Element {
+function OfferScreen({ offers1, reviews }: OfferScreenProps): JSX.Element {
+  const offerId = useParams().offerId as string;
+  const offerGot: Offer[] = offers.filter((off) => (off.id === offerId));
+  if (offerGot.length === 0) {
+    return <Navigate to={AppRoute.Root}></Navigate>;
+  }
+  const offer: Offer = offerGot[0];
   return (
     <div className="page">
       <Helmet>

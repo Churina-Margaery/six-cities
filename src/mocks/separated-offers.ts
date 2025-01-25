@@ -165,8 +165,12 @@ function getOfferById(id: string): Offer {
   return offers.filter((offer) => (offer.id === id))[0];
 }
 
+function hasSuchOfferId(id: string): boolean {
+  return offers.filter((offer) => (offer.id === id)).length > 0;
+}
+
 function getOffer(): Offer {
   return offers[Math.floor(Math.random() * offers.length)];
 }
 
-export { getOffer, getOfferById };
+export { getOffer, getOfferById, hasSuchOfferId, offers };
