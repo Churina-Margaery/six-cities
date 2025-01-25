@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
 import { Offer } from '../../types/separated-offers';
 import { Reviews } from '../../types/reviews';
 
@@ -14,35 +16,7 @@ function OfferScreen({ offer, reviews }: OfferScreenProps): JSX.Element {
       <Helmet>
         <title>6 cities. Offer</title>
       </Helmet>
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link" href="main.html">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header></Header>
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
@@ -122,7 +96,7 @@ function OfferScreen({ offer, reviews }: OfferScreenProps): JSX.Element {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
                   {reviews.map((review, id) => {
                     const keyValue = `${id}-${review.id}`;
@@ -149,7 +123,7 @@ function OfferScreen({ offer, reviews }: OfferScreenProps): JSX.Element {
                           <time className="reviews__time" dateTime="2019-04-24">{review.date}</time>
                         </div>
                       </li>
-                    )
+                    );
                   })}
 
 
@@ -310,6 +284,7 @@ function OfferScreen({ offer, reviews }: OfferScreenProps): JSX.Element {
             </div>
           </section>
         </div>
+        <Footer></Footer>
       </main>
     </div>
   );

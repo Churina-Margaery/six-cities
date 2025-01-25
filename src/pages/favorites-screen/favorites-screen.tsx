@@ -1,23 +1,26 @@
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 import { Offers } from '../../types/offers';
-import { AppRoute } from '../../const';
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
 
 type FavouriteScreenProps = {
   offers: Offers;
 }
 
-function getPremium(isPremium: boolean): JSX.Element {
+function Premium(isPremium: boolean): JSX.Element {
   return ((isPremium) ?
     <div className="place-card__mark">
       <span>Premium</span>
     </div > : <div ></div >);
 }
 
-function getFavoritesLocations(offers: Offers, cityName: string, iD: string): JSX.Element {
+function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
+  const navigate = useNavigate();
   return (
-    <div className="favorites__locations-items" key={iD}>
+    <div className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
           <a className="locations__item-link" href="#">
@@ -29,8 +32,8 @@ function getFavoritesLocations(offers: Offers, cityName: string, iD: string): JS
         {offers.filter((offer) => (offer.city.name === cityName)).map((offer, id) => {
           const keyValue = `${id}-${offer.id}`;
           return (
-            < article key={keyValue} className="favorites__card place-card" >
-              {getPremium(offer.isPremium)}
+            < article key={keyValue} className="favorites__card place-card" onClick={() => navigate('/offer/1')}>
+              {Premium(offer.isPremium)}
               <div className="favorites__image-wrapper place-card__image-wrapper">
                 <a href="#">
                   <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place image" />
@@ -70,40 +73,12 @@ function getFavoritesLocations(offers: Offers, cityName: string, iD: string): JS
 
 function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
   const uniqueCities = [...new Set(offers.map((offer) => offer.city.name))];
-  const navigate = useNavigate();
   return (
     <div className="page">
       <Helmet>
         <title>6 cities. Favorites</title>
       </Helmet>
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link" onClick={() => navigate(AppRoute.Root)}>
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header></Header>
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
@@ -114,7 +89,7 @@ function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
                 const keyValue = `${id}-${cityName}`;
                 return (
                   <li key={keyValue}>
-                    {getFavoritesLocations(offers, cityName, keyValue)}
+                    {FavoritesLocations(offers, cityName)}
                   </li>
                 );
               })}
@@ -123,11 +98,7 @@ function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
           </section>
         </div>
       </main >
-      <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
-          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-        </a>
-      </footer>
+      <Footer></Footer>
     </div >
   );
 }
