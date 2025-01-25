@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import ApartmentCard from '../../components/card/apartment-card';
+import OffersList from '../../components/offers-list/offers-list';
 import { Offers } from '../../types/offers';
 
 type MainScreenProps = {
@@ -10,7 +10,6 @@ type MainScreenProps = {
 }
 
 function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
-
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -102,13 +101,10 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-
-              <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer, id) => {
-                  const keyValue = `${id}-${offer.id}`;
-                  return (<div key={keyValue}><ApartmentCard offer={offer} /></div>);
-                })}
-              </div>
+              <OffersList
+                offers={offers}
+              >
+              </OffersList>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

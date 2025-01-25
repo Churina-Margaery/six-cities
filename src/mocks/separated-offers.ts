@@ -161,6 +161,12 @@ export const offer4: Offer = {
 
 const offers: Offer[] = [offer1, offer2, offer3, offer4];
 
-export default function getOffer(): Offer {
+function getOfferById(id: string): Offer {
+  return offers.filter((offer) => (offer.id === id))[0];
+}
+
+function getOffer(): Offer {
   return offers[Math.floor(Math.random() * offers.length)];
 }
+
+export { getOffer, getOfferById };

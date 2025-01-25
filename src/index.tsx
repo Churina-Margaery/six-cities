@@ -5,7 +5,7 @@ import { Setting } from './const';
 
 import { offers } from './mocks/offers';
 import { reviewsMock } from './mocks/reviews';
-import getOffer from './mocks/separated-offers';
+import { getOffer } from './mocks/separated-offers';
 
 
 const root = ReactDOM.createRoot(

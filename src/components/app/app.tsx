@@ -99,10 +99,7 @@ function App({ offersCount, offers, offer, reviews }: AppScreenProps): JSX.Eleme
                 restrictedFor={AuthorizationStatus.Auth}
                 redirectTo={AppRoute.Root}
               >
-                <OfferScreen
-                  offer={offer}
-                  reviews={reviews}
-                />
+                <OfferNotLoggedScreen />
               </PrivateRoute>
             }
           />
