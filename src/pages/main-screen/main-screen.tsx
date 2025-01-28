@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
-import ApartmentCard from '../../components/card/apartment-card';
+import OffersList from '../../components/offers-list/offers-list';
+import { Offers } from '../../types/offers';
 
 type MainScreenProps = {
   offersCount: number;
+  offers: Offers;
 }
 
-function MainScreen({ offersCount }: MainScreenProps): JSX.Element {
+function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -16,24 +19,23 @@ function MainScreen({ offersCount }: MainScreenProps): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
+              <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
+
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
+                  <Link className="header__nav-link header__nav-link--profile" to="/favorites">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
                     <span className="header__favorite-count">3</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
+                  <Link className="header__nav-link" to="/">
                     <span className="header__signout">Sign out</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -99,14 +101,10 @@ function MainScreen({ offersCount }: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-                <ApartmentCard />
-              </div>
+              <OffersList
+                offers={offers}
+              >
+              </OffersList>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
