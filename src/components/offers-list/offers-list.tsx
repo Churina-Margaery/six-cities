@@ -5,9 +5,10 @@ import { Offers } from '../../types/offers';
 
 type OffersListProps = {
   offers: Offers;
+  onOfferHover: (id: string) => void;
 }
 
-function OffersList({ offers }: OffersListProps): JSX.Element {
+function OffersList({ offers, onOfferHover }: OffersListProps): JSX.Element {
   const [, setOfferActive] = useState(offers[0]);
 
   return (
@@ -17,6 +18,7 @@ function OffersList({ offers }: OffersListProps): JSX.Element {
         return (
           <div key={keyValue} onMouseEnter={() => {
             setOfferActive(offer);
+            onOfferHover(offer.id);
           }}
           ><ApartmentCard offer={offer} />
           </div>);

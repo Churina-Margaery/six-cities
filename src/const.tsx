@@ -21,4 +21,8 @@ enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export { Setting, AppRoute, AuthorizationStatus };
+const URL_MARKER_DEFAULT: string = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+
+const URL_MARKER_CURRENT: string = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+
+export { Setting, AppRoute, AuthorizationStatus, URL_MARKER_CURRENT, URL_MARKER_DEFAULT };
