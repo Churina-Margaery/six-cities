@@ -1,5 +1,5 @@
-import SmallCard from '../components/small-card/small-card';
-import { Offers } from '../types/offers';
+import SmallCard from '../small-card/small-card';
+import { Offers } from '../../types/offers';
 
 type SmallCardsListProps = {
   offers: Offers;
@@ -15,8 +15,7 @@ function SmallCardsList({ offers, cityName }: SmallCardsListProps): JSX.Element 
           < article key={keyValue} className="favorites__card place-card">
             <SmallCard
               offer={offer}
-            >
-            </SmallCard>
+            />
           </article >
         );
       })}

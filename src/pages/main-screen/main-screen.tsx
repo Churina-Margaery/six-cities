@@ -116,8 +116,7 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
               <OffersList
                 offers={offers}
                 onOfferHover={handleOfferHover}
-              >
-              </OffersList>
+              />
             </section>
             {/* <div className="cities__right-section">
               <section className="cities__map map"></section>
@@ -134,8 +133,7 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
               offers={offers}
               selectedPoint={selectedOffer.id}
               block='cities'
-            >
-            </Map>
+            />
           </div>
         </div>
       </main>

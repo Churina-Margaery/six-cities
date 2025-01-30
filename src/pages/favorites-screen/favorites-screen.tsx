@@ -22,8 +22,7 @@ function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
       <SmallCardsList
         offers={offers}
         cityName={cityName}
-      >
-      </SmallCardsList>
+      />
     </div>
   );
 }

@@ -15,8 +15,7 @@ function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {
           <li key={keyValue} className="reviews__item">
             <ReviewItem
               review={review}
-            >
-            </ReviewItem>
+            />
           </li>
         );
       })}

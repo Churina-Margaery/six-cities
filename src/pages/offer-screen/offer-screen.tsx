@@ -123,13 +123,11 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ReviewsList
                   reviews={reviews}
-                >
-                </ReviewsList>
+                />
                 <CommentForm
                   review={''}
                   rating={0}
-                >
-                </CommentForm>
+                />
               </section>
             </div>
           </div>
@@ -138,8 +136,7 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
             offers={nearbyOffers}
             selectedPoint={nearbyOfferSelected.id}
             block='offer'
-          >
-          </Map>
+          />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -147,8 +144,7 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
             <OffersListNearby
               offers={nearbyOffers}
               onOfferHover={handleOfferHover}
-            >
-            </OffersListNearby>
+            />
           </section>
         </div>
         <Footer></Footer>
