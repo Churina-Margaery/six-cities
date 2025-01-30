@@ -15,17 +15,15 @@ import PrivateRoute from '../private-root/private-root';
 import { AuthorizationStatus } from '../../const';
 
 import { Offers } from '../../types/offers';
-import { Offer } from '../../types/separated-offers';
 import { Reviews } from '../../types/reviews';
 
 type AppScreenProps = {
   offersCount: number;
   offers: Offers;
-  offer: Offer;
   reviews: Reviews;
 }
 
-function App({ offersCount, offers, offer, reviews }: AppScreenProps): JSX.Element {
+function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -86,7 +84,6 @@ function App({ offersCount, offers, offer, reviews }: AppScreenProps): JSX.Eleme
                 redirectTo={AppRoute.Login}
               >
                 <OfferScreen
-                  offer={offer}
                   reviews={reviews}
                 />
               </PrivateRoute>

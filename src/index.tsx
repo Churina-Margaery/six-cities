@@ -5,7 +5,6 @@ import { Setting } from './const';
 
 import { offers } from './mocks/offers';
 import { reviewsMock } from './mocks/reviews';
-import { getOffer } from './mocks/separated-offers';
 
 
 const root = ReactDOM.createRoot(
@@ -17,7 +16,6 @@ root.render(
     <App
       offersCount={Setting.OffersCount}
       offers={offers}
-      offer={getOffer()}
       reviews={reviewsMock}
     />
   </React.StrictMode>

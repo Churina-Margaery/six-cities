@@ -1,5 +1,4 @@
-import { useState, ChangeEvent, FormEventHandler } from 'react';
-import { Review } from "../../types/reviews";
+import { useState, ChangeEvent } from 'react';
 
 type CommentFormProps = {
   review: string;

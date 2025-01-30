@@ -1,8 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import OffersList from '../../components/offers-list/offers-list';
 import { Offers } from '../../types/offers';
+import Map from '../../components/map/map';
 
 type MainScreenProps = {
   offersCount: number;
@@ -10,6 +12,16 @@ type MainScreenProps = {
 }
 
 function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
+  const [selectedOffer, setSelectedOffer] = useState(offers[0]);
+
+  const handleOfferHover = (OfferId: string) => {
+    const offerFound = offers.find((offer) =>
+      offer.id === OfferId,
+    );
+    const currentOffer = offerFound !== undefined ? offerFound : offers[0];
+    setSelectedOffer(currentOffer);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -103,12 +115,25 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
               </form>
               <OffersList
                 offers={offers}
-              >
-              </OffersList>
+                onOfferHover={handleOfferHover}
+              />
             </section>
-            <div className="cities__right-section">
+            {/* <div className="cities__right-section">
               <section className="cities__map map"></section>
-            </div>
+            </div> */}
+            <Map
+              city={{
+                'name': 'Amsterdam',
+                'location': {
+                  'latitude': 52.35514938496378,
+                  'longitude': 4.673877537499948,
+                  'zoom': 8
+                }
+              }}
+              offers={offers}
+              selectedPoint={selectedOffer.id}
+              block='cities'
+            />
           </div>
         </div>
       </main>
