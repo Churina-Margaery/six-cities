@@ -11,9 +11,19 @@ type MapProps = {
   city: City;
   offers: Offer[];
   selectedPoint: string;
+  block: string;
 }
 
-function Map({ city, offers, selectedPoint }: MapProps): JSX.Element {
+function Map({ city, offers, selectedPoint, block }: MapProps): JSX.Element {
+  const styleMain = {
+    height: '500px',
+    width: '500px',
+  };
+  const styleOffer = {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '80%',
+  };
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -47,14 +57,12 @@ function Map({ city, offers, selectedPoint }: MapProps): JSX.Element {
   }, [map, offers, selectedPoint, currentCustomIcon, defaultCustomIcon]);
 
   return (
-    <div
-      style={{
-        height: '500px',
-        width: '500px'
-      }}
+    <section
+      className={`${block}__map map`}
+      style={block === 'offer' ? styleOffer : styleMain}
       ref={mapRef}
     >
-    </div>
+    </section >
   );
 }
 

@@ -3,7 +3,7 @@ import leaflet from 'leaflet';
 
 import { City } from '../types/offers';
 
-function useMap(mapRef: React.MutableRefObject<null>, city: City) {
+function useMap(mapRef: React.MutableRefObject<HTMLElement | null>, city: City) {
   const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef(false);
 

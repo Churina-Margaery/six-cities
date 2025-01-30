@@ -133,6 +133,7 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
               }}
               offers={offers}
               selectedPoint={selectedOffer.id}
+              block='cities'
             >
             </Map>
           </div>

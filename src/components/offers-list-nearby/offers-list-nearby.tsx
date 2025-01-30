@@ -6,10 +6,10 @@ type OffersListProps = {
   onOfferHover: (id: string) => void;
 }
 
-function OffersList({ offers, onOfferHover }: OffersListProps): JSX.Element {
+function OffersListNearby({ offers, onOfferHover }: OffersListProps): JSX.Element {
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className="near-places__list places__list">
       {offers.map((offer, id) => {
         const keyValue = `${id}-${offer.id}`;
         return (
@@ -23,4 +23,4 @@ function OffersList({ offers, onOfferHover }: OffersListProps): JSX.Element {
   );
 }
 
-export default OffersList;
+export default OffersListNearby;
