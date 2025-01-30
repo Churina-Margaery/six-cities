@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Offers } from '../../types/offers';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import SmallCardsList from '../../small-cards-list/small-cards-list';
+import SmallCardsList from '../../components/small-cards-list/small-cards-list';
 
 type FavouriteScreenProps = {
   offers: Offers;
