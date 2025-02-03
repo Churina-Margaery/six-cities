@@ -1,5 +1,7 @@
 import React from 'react';
+import { useAppDispatch } from '../../hooks';
 
+import { favoriteOfferChange } from '../../store/action';
 import { Offer } from '../../types/offers';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +17,10 @@ function Premium(): JSX.Element {
 }
 
 function SmallCard({ offer }: SmallCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const handleFavoriteHovers = (id: string) => {
+    dispatch(favoriteOfferChange({ id }));
+  };
   return (
     <React.Fragment>
       {offer.isPremium && Premium()}
@@ -29,7 +35,11 @@ function SmallCard({ offer }: SmallCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+            onClick={() => handleFavoriteHovers(offer.id)}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

@@ -1,5 +1,6 @@
 
-import { useAppDispatch, useAppSelector } from '../../hooks'; import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { Link } from 'react-router-dom';
 import { favoriteOfferChange } from '../../store/action';
 
 import { Offer } from '../../types/offers';

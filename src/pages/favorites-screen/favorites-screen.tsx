@@ -14,7 +14,7 @@ function FavoritesScreen(): JSX.Element {
       <Header></Header>
 
       <main className="page__main page__main--favorites">
-        <FavoritesList></FavoritesList>
+        <FavoritesList />
       </main >
       <Footer></Footer>
     </div >
