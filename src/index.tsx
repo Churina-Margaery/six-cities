@@ -5,6 +5,8 @@ import { Setting } from './const';
 
 import { offers } from './mocks/offers';
 import { reviewsMock } from './mocks/reviews';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 
 const root = ReactDOM.createRoot(
@@ -13,10 +15,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      offersCount={Setting.OffersCount}
-      offers={offers}
-      reviews={reviewsMock}
-    />
+    <Provider store={store}>
+      <App
+        offersCount={Setting.OffersCount}
+        offers={offers}
+        reviews={reviewsMock}
+      />
+    </Provider>
   </React.StrictMode>
 );

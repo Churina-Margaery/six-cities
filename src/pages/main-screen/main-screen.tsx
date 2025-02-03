@@ -5,6 +5,10 @@ import { useState } from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import { Offers } from '../../types/offers';
 import Map from '../../components/map/map';
+import CitiesList from '../../components/cities-list/cities-list';
+
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeCity } from '../../store/action';
 
 type MainScreenProps = {
   offersCount: number;
@@ -13,6 +17,8 @@ type MainScreenProps = {
 
 function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState(offers[0]);
+  const [selectedCity, setSelectedCity] = useState('Paris');
+  const dispatch = useAppDispatch();
 
   const handleOfferHover = (OfferId: string) => {
     const offerFound = offers.find((offer) =>
@@ -20,6 +26,11 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
     );
     const currentOffer = offerFound !== undefined ? offerFound : offers[0];
     setSelectedOffer(currentOffer);
+  };
+
+  const handleCityHover = (city: string) => {
+    setSelectedCity(city);
+    dispatch(changeCity(city));
   };
 
   return (
@@ -57,42 +68,10 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+        <CitiesList
+          chosenCity={selectedCity}
+          onCityHover={handleCityHover}
+        />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
@@ -114,13 +93,10 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <OffersList
-                offers={offers}
+                offers={useAppSelector((state) => state.offers)}
                 onOfferHover={handleOfferHover}
               />
             </section>
-            {/* <div className="cities__right-section">
-              <section className="cities__map map"></section>
-            </div> */}
             <Map
               city={{
                 'name': 'Amsterdam',
