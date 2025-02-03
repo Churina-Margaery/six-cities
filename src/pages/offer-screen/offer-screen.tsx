@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Offer } from '../../types/separated-offers';
-import { offers as allOffers } from '../../mocks/separated-offers';
+import { offers } from '../../mocks/separated-offers';
 import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
@@ -19,13 +19,6 @@ type OfferScreenProps = {
 }
 
 function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
-
-  const offersFavorite = useAppSelector((state) => state.favoriteOffers);
-
-  // !!! todo server fix
-  const offers = allOffers.filter((offer) =>
-    offersFavorite.some((favorite) => favorite.id === offer.id)
-  );
 
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
   const [nearbyOfferSelected, setSelectedOffer] = useState(offers[0]);

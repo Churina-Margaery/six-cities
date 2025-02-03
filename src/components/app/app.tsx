@@ -1,7 +1,6 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 
 import MainScreen from '../../pages/main-screen/main-screen';
-import FavoritesEmptyScreen from '../../pages/favorites-empty-screen/favorites-empty-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainEmptyScreen from '../../pages/main-empty-screen/main-empty-screen';
@@ -35,17 +34,6 @@ function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
                 offersCount={offersCount}
                 offers={offers}
               />
-            }
-          />
-          <Route
-            path={AppRoute.EmptyFavorites}
-            element={
-              <PrivateRoute
-                restrictedFor={AuthorizationStatus.NoAuth}
-                redirectTo={AppRoute.Login}
-              >
-                <FavoritesEmptyScreen />
-              </PrivateRoute>
             }
           />
           <Route

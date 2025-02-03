@@ -10,10 +10,8 @@ type ApartmentCardProps = {
 
 function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const handleFavoriteHovers = (id: string, isFav: boolean) => {
-    console.log(id, isFav);
+  const handleFavoriteHovers = (id: string) => {
     dispatch(favoriteOfferChange({ id }));
-    console.log(isFav);
   };
 
   return (
@@ -32,7 +30,7 @@ function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
           <button
             className={`place-card__bookmark-button ${offer.isFavorite && 'place-card__bookmark-button--active'} button`}
             type="button"
-            onClick={() => handleFavoriteHovers(offer.id, offer.isFavorite)}
+            onClick={() => handleFavoriteHovers(offer.id)}
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark"></use>
