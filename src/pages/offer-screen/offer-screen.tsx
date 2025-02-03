@@ -3,16 +3,16 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Offer } from '../../types/separated-offers';
-import { offers } from '../../mocks/separated-offers';
-import { offers as nearbyOffers } from '../../mocks/offers';
+import { offers as allOffers } from '../../mocks/separated-offers';
 import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import OffersListNearby from '../../components/offers-list-nearby/offers-list-nearby';
 import Map from '../../components/map/map';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useState } from 'react';
+import { useAppSelector } from '../../hooks';
+import OffersList from '../../components/offers-list/offers-list';
 
 type OfferScreenProps = {
   reviews: Reviews;
@@ -20,6 +20,14 @@ type OfferScreenProps = {
 
 function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
 
+  const offersFavorite = useAppSelector((state) => state.favoriteOffers);
+
+  // !!! todo server fix
+  const offers = allOffers.filter((offer) =>
+    offersFavorite.some((favorite) => favorite.id === offer.id)
+  );
+
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
   const [nearbyOfferSelected, setSelectedOffer] = useState(offers[0]);
 
   const handleOfferHover = (OfferId: string) => {
@@ -141,9 +149,10 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersListNearby
+            <OffersList
               offers={nearbyOffers}
               onOfferHover={handleOfferHover}
+              classes='near-places__list places__list'
             />
           </section>
         </div>

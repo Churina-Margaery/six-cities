@@ -55,9 +55,7 @@ function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
                 restrictedFor={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Login}
               >
-                <FavoritesScreen
-                  offers={offers}
-                />
+                <FavoritesScreen />
               </PrivateRoute>
             }
           />

@@ -4,10 +4,7 @@ import { Offers } from '../../types/offers';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import SmallCardsList from '../../components/small-cards-list/small-cards-list';
-
-type FavouriteScreenProps = {
-  offers: Offers;
-}
+import { useAppSelector } from '../../hooks';
 
 function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
   return (
@@ -27,7 +24,8 @@ function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
   );
 }
 
-function FavoritesScreen({ offers }: FavouriteScreenProps): JSX.Element {
+function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const uniqueCities = [...new Set(offers.map((offer) => offer.city.name))];
   return (
     <div className="page">

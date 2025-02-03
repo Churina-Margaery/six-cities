@@ -17,10 +17,9 @@ type MainScreenProps = {
 
 function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState(offers[0]);
-  const [selectedCity, setSelectedCity] = useState('Paris');
   const dispatch = useAppDispatch();
 
-  const handleOfferHover = (OfferId: string) => {
+  const handleOffersHover = (OfferId: string) => {
     const offerFound = offers.find((offer) =>
       offer.id === OfferId,
     );
@@ -29,7 +28,6 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
   };
 
   const handleCityHover = (city: string) => {
-    setSelectedCity(city);
     dispatch(changeCity(city));
   };
 
@@ -52,7 +50,7 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
+                    <span className="header__favorite-count">{useAppSelector((state) => state.favoritesCount)}</span>
                   </Link>
                 </li>
                 <li className="header__nav-item">
@@ -69,7 +67,7 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <CitiesList
-          chosenCity={selectedCity}
+          chosenCity={useAppSelector((state) => state.activeCityName)}
           onCityHover={handleCityHover}
         />
         <div className="cities">
@@ -93,8 +91,9 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <OffersList
-                offers={useAppSelector((state) => state.offers)}
-                onOfferHover={handleOfferHover}
+                offers={useAppSelector((state) => state.offersByCity)}
+                onOfferHover={handleOffersHover}
+                classes="cities__places-list places__list tabs__content"
               />
             </section>
             <Map
