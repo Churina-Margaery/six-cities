@@ -17,12 +17,11 @@ import { Offers } from '../../types/offers';
 import { Reviews } from '../../types/reviews';
 
 type AppScreenProps = {
-  offersCount: number;
   offers: Offers;
   reviews: Reviews;
 }
 
-function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
+function App({ offers, reviews }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -31,7 +30,6 @@ function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
             path={AppRoute.Root}
             element={
               <MainScreen
-                offersCount={offersCount}
                 offers={offers}
               />
             }

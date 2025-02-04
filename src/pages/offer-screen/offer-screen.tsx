@@ -85,7 +85,7 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
                   {offer.bedrooms} {getPluralEnding(offer.bedrooms, 'Bedroom')}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {offer.maxAdults} adults
+                  Max {offer.maxAdults} {getPluralEnding(offer.maxAdults, 'adult')}
                 </li>
               </ul>
               <div className="offer__price">

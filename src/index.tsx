@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import { Setting } from './const';
 
 import { offers } from './mocks/offers';
 import { reviewsMock } from './mocks/reviews';
@@ -17,7 +16,6 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App
-        offersCount={Setting.OffersCount}
         offers={offers}
         reviews={reviewsMock}
       />

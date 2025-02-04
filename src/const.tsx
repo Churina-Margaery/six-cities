@@ -1,7 +1,3 @@
-const Setting = {
-  OffersCount: 318,
-};
-
 const sixCities: string[] = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 enum AppRoute {
@@ -39,4 +35,4 @@ const URL_MARKER_DEFAULT: string = 'https://assets.htmlacademy.ru/content/intens
 
 const URL_MARKER_CURRENT: string = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
 
-export { Setting, AppRoute, AuthorizationStatus, SortTypes, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, sixCities };
+export { AppRoute, AuthorizationStatus, SortTypes, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, sixCities };

@@ -87,14 +87,14 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
             </section>
             <Map
               city={{
-                'name': 'Amsterdam',
+                'name': cityName,
                 'location': {
                   'latitude': 52.35514938496378,
                   'longitude': 4.673877537499948,
                   'zoom': 8
                 }
               }}
-              offers={offers}
+              offers={useAppSelector((state) => state.offersByCity)}
               selectedPoint={selectedOffer.id}
               block='cities'
             />
