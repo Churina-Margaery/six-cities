@@ -10,15 +10,17 @@ import CitiesList from '../../components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCity } from '../../store/action';
 import SortChoice from '../../components/sort-types/sort-types';
+import { getPluralEnding } from '../../utils';
 
 type MainScreenProps = {
-  offersCount: number;
   offers: Offers;
 }
 
-function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
+function MainScreen({ offers }: MainScreenProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState(offers[0]);
   const dispatch = useAppDispatch();
+  const cityName = useAppSelector((state) => state.activeCityName);
+  const offersNum = useAppSelector((state) => state.offersByCity.length);
 
   const handleOffersHover = (OfferId: string) => {
     const offerFound = offers.find((offer) =>
@@ -68,14 +70,14 @@ function MainScreen({ offersCount, offers }: MainScreenProps): JSX.Element {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <CitiesList
-          chosenCity={useAppSelector((state) => state.activeCityName)}
+          chosenCity={cityName}
           onCityHover={handleCityHover}
         />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offersNum} {getPluralEnding(offersNum, 'place')} to stay in {cityName}</b>
               <SortChoice />
               <OffersList
                 offers={useAppSelector((state) => state.offersByCity)}

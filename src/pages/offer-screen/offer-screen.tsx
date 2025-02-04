@@ -13,6 +13,7 @@ import { AppRoute } from '../../const';
 import { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import OffersList from '../../components/offers-list/offers-list';
+import { getPluralEnding } from '../../utils';
 
 type OfferScreenProps = {
   reviews: Reviews;
@@ -81,7 +82,7 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
                   {offer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer.bedrooms} {offer.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}
+                  {offer.bedrooms} {getPluralEnding(offer.bedrooms, 'Bedroom')}
                 </li>
                 <li className="offer__feature offer__feature--adults">
                   Max {offer.maxAdults} adults

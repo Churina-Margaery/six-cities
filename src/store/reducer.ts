@@ -64,6 +64,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.activeCityName = action.payload;
       state.offersByCity = selectOffers(state.offers, action.payload);
       state.savedPopularSort = selectOffers(startOffers, action.payload);
+      state.activeSort = 'Popular';
     })
     .addCase(favoriteOfferChange, (state, action) => {
       state.offers = toggleFavoriteCard(state.offers, action.payload.id);
@@ -75,6 +76,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(sortTypeChange, (state, action) => {
       state.offersByCity = sortChange(state.offersByCity, action.payload, state.savedPopularSort);
+      state.activeSort = action.payload;
     });
 });
 
