@@ -1,7 +1,6 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 
 import MainScreen from '../../pages/main-screen/main-screen';
-import FavoritesEmptyScreen from '../../pages/favorites-empty-screen/favorites-empty-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainEmptyScreen from '../../pages/main-empty-screen/main-empty-screen';
@@ -18,12 +17,11 @@ import { Offers } from '../../types/offers';
 import { Reviews } from '../../types/reviews';
 
 type AppScreenProps = {
-  offersCount: number;
   offers: Offers;
   reviews: Reviews;
 }
 
-function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
+function App({ offers, reviews }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -32,20 +30,8 @@ function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
             path={AppRoute.Root}
             element={
               <MainScreen
-                offersCount={offersCount}
                 offers={offers}
               />
-            }
-          />
-          <Route
-            path={AppRoute.EmptyFavorites}
-            element={
-              <PrivateRoute
-                restrictedFor={AuthorizationStatus.NoAuth}
-                redirectTo={AppRoute.Login}
-              >
-                <FavoritesEmptyScreen />
-              </PrivateRoute>
             }
           />
           <Route
@@ -55,9 +41,7 @@ function App({ offersCount, offers, reviews }: AppScreenProps): JSX.Element {
                 restrictedFor={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Login}
               >
-                <FavoritesScreen
-                  offers={offers}
-                />
+                <FavoritesScreen />
               </PrivateRoute>
             }
           />

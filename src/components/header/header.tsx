@@ -1,4 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
+
 import { AppRoute } from '../../const';
 
 function Header(): JSX.Element {
@@ -15,11 +17,11 @@ function Header(): JSX.Element {
           <nav className="header__nav">
             <ul className="header__nav-list">
               <li className="header__nav-item user">
-                <Link className="header__nav-link header__nav-link--profile" to="/">
+                <Link className="header__nav-link header__nav-link--profile" to="/favorites">
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
                   <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">3</span>
+                  <span className="header__favorite-count">{useAppSelector((state) => state.favoritesCount)}</span>
                 </Link>
               </li>
               <li className="header__nav-item">

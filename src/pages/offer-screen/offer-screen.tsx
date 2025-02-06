@@ -4,15 +4,16 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Offer } from '../../types/separated-offers';
 import { offers } from '../../mocks/separated-offers';
-import { offers as nearbyOffers } from '../../mocks/offers';
 import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import OffersListNearby from '../../components/offers-list-nearby/offers-list-nearby';
 import Map from '../../components/map/map';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useState } from 'react';
+import { useAppSelector } from '../../hooks';
+import OffersList from '../../components/offers-list/offers-list';
+import { getPluralEnding } from '../../utils';
 
 type OfferScreenProps = {
   reviews: Reviews;
@@ -20,6 +21,7 @@ type OfferScreenProps = {
 
 function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
 
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
   const [nearbyOfferSelected, setSelectedOffer] = useState(offers[0]);
 
   const handleOfferHover = (OfferId: string) => {
@@ -80,10 +82,10 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
                   {offer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer.bedrooms} {offer.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}
+                  {offer.bedrooms} {getPluralEnding(offer.bedrooms, 'Bedroom')}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {offer.maxAdults} adults
+                  Max {offer.maxAdults} {getPluralEnding(offer.maxAdults, 'adult')}
                 </li>
               </ul>
               <div className="offer__price">
@@ -141,9 +143,10 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersListNearby
+            <OffersList
               offers={nearbyOffers}
               onOfferHover={handleOfferHover}
+              classes='near-places__list places__list'
             />
           </section>
         </div>

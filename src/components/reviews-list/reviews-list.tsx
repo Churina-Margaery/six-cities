@@ -19,8 +19,6 @@ function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {
           </li>
         );
       })}
-
-
     </ul>
   );
 }
