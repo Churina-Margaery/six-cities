@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import CitiesList from '../../components/cities-list/cities-list';
 
 function MainEmptyScreen(): JSX.Element {
   return (
@@ -38,7 +37,6 @@ function MainEmptyScreen(): JSX.Element {
 
       <main className="page__main page__main--index page__main--index-empty">
         <h1 className="visually-hidden">Cities</h1>
-        <CitiesList></CitiesList>
         <div className="cities">
           <div className="cities__places-container cities__places-container--empty container">
             <section className="cities__no-places">
