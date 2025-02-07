@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, favoriteOfferChange, sortTypeChange } from './action';
-import { offers as startOffers } from '../mocks/offers';
+import { changeCity, favoriteOfferChange, sortTypeChange, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
+import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
 
 
@@ -47,15 +47,32 @@ function sortChange(offers: Offers, type: string, popularOffers: Offers) {
   return offers;
 }
 
-const initialState = {
+type InitialState = {
+  activeCityName: string;
+  offersByCity: Offers;
+  favoritesCount: number;
+  offers: Offers;
+  nearbyOffers: Offers;
+  favoriteOffers: Offers;
+  activeSort: string;
+  savedPopularSort: Offers;
+  authorizationStatus: AuthorizationStatus;
+  error: string | null;
+  isOffersDataLoading: boolean;
+}
+
+const initialState: InitialState = {
   activeCityName: 'Paris',
-  offersByCity: selectOffers(startOffers, 'Paris'),
-  favoritesCount: countFavorites(startOffers),
-  offers: startOffers,
-  nearbyOffers: startOffers,
-  favoriteOffers: getFavorites(startOffers),
+  offersByCity: selectOffers([], 'Paris'),
+  favoritesCount: countFavorites([]),
+  offers: [],
+  nearbyOffers: [],
+  favoriteOffers: getFavorites([]),
   activeSort: 'Popular',
-  savedPopularSort: selectOffers(startOffers, 'Paris'),
+  savedPopularSort: selectOffers([], 'Paris'),
+  authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
+  isOffersDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -63,7 +80,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, action) => {
       state.activeCityName = action.payload;
       state.offersByCity = selectOffers(state.offers, action.payload);
-      state.savedPopularSort = selectOffers(startOffers, action.payload);
+      state.savedPopularSort = selectOffers([], action.payload);
       state.activeSort = 'Popular';
     })
     .addCase(favoriteOfferChange, (state, action) => {
@@ -77,6 +94,18 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(sortTypeChange, (state, action) => {
       state.offersByCity = sortChange(state.offersByCity, action.payload, state.savedPopularSort);
       state.activeSort = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     });
 });
 

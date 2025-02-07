@@ -7,21 +7,25 @@ import MainEmptyScreen from '../../pages/main-empty-screen/main-empty-screen';
 import OfferNotLoggedScreen from '../../pages/offer-not-logged-screen/offer-not-logged-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PageNotFoundScreen from '../../pages/page-not-found-screen/page-not-found-screen';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { AppRoute } from '../../const';
 import PrivateRoute from '../private-root/private-root';
 import { AuthorizationStatus } from '../../const';
+import { useAppSelector } from '../../hooks';
 
-import { Offers } from '../../types/offers';
-import { Reviews } from '../../types/reviews';
 
-type AppScreenProps = {
-  offers: Offers;
-  reviews: Reviews;
-}
+function App(): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const offers = useAppSelector((state) => state.offers);
 
-function App({ offers, reviews }: AppScreenProps): JSX.Element {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -38,6 +42,7 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute
+                authorizationStatus={authorizationStatus}
                 restrictedFor={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Login}
               >
@@ -49,6 +54,7 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
             path={AppRoute.Login}
             element={
               <PrivateRoute
+                authorizationStatus={authorizationStatus}
                 restrictedFor={AuthorizationStatus.Auth}
                 redirectTo={AppRoute.Root}
               >
@@ -64,11 +70,12 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
             path={`${AppRoute.OfferLogged}/:offerId`}
             element={
               <PrivateRoute
+                authorizationStatus={authorizationStatus}
                 restrictedFor={AuthorizationStatus.NoAuth}
                 redirectTo={AppRoute.Login}
               >
                 <OfferScreen
-                  reviews={reviews}
+                  reviews={[]}
                 />
               </PrivateRoute>
             }
@@ -77,6 +84,7 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
             path={`${AppRoute.OfferNotLogged}/:offerId`}
             element={
               <PrivateRoute
+                authorizationStatus={authorizationStatus}
                 restrictedFor={AuthorizationStatus.Auth}
                 redirectTo={AppRoute.Root}
               >

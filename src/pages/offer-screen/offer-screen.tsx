@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Offer } from '../../types/separated-offers';
-import { offers } from '../../mocks/separated-offers';
 import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
