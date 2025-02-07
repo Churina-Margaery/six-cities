@@ -10,7 +10,25 @@ import CitiesList from '../../components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCity } from '../../store/action';
 import SortChoice from '../../components/sort-types/sort-types';
-import { getPluralEnding } from '../../utils';
+import { getCityParams, getPluralEnding } from '../../utils';
+
+type EmptyCityProps = {
+  cityName: string;
+}
+
+function EmptyCity({ cityName }: EmptyCityProps): JSX.Element {
+  return (
+    <div className="cities__places-container cities__places-container--empty container">
+      <section className="cities__no-places">
+        <div className="cities__status-wrapper tabs__content">
+          <b className="cities__status">No places to stay available</b>
+          <p className="cities__status-description">We could not find any property available at the moment in {cityName}</p>
+        </div>
+      </section>
+      <div className="cities__right-section"></div>
+    </div>
+  );
+}
 
 type MainScreenProps = {
   offers: Offers;
@@ -84,15 +102,12 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
                 onOfferHover={handleOffersHover}
                 classes="cities__places-list places__list tabs__content"
               />
+              {offersNum === 0 && <EmptyCity cityName={cityName} />}
             </section>
             <Map
               city={{
                 'name': cityName,
-                'location': {
-                  'latitude': 52.35514938496378,
-                  'longitude': 4.673877537499948,
-                  'zoom': 8
-                }
+                'location': getCityParams(cityName),
               }}
               offers={useAppSelector((state) => state.offersByCity)}
               selectedPoint={selectedOffer.id}
