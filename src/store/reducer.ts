@@ -1,8 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, favoriteOfferChange, sortTypeChange, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
+import {
+  changeCity, favoriteOfferChange, sortTypeChange, loadOffers,
+  requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData
+} from './action';
 import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
-
+import { Offer as FullOffer } from '../types/separated-offers';
 
 function priceDown(offerA: Offer, offerB: Offer) {
   return offerA.price - offerB.price;
@@ -59,6 +62,7 @@ type InitialState = {
   authorizationStatus: AuthorizationStatus;
   error: string | null;
   isOffersDataLoading: boolean;
+  activeOffer: FullOffer | null;
 }
 
 const initialState: InitialState = {
@@ -73,6 +77,7 @@ const initialState: InitialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isOffersDataLoading: false,
+  activeOffer: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -106,6 +111,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
+    })
+    .addCase(fetchOfferData, (state, action) => {
+      state.activeOffer = action.payload;
     });
 });
 

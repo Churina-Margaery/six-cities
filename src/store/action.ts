@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { AuthorizationStatus } from '../const';
 import { Offers } from '../types/offers';
+import { Offer as FullOffer } from '../types/separated-offers';
 
 export const changeCity = createAction('main/changeCity', (value: string) => ({ payload: value }));
 
@@ -16,3 +17,5 @@ export const requireAuthorization = createAction<AuthorizationStatus>('user/requ
 export const setError = createAction<string | null>('main/setError');
 
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
+
+export const fetchOfferData = createAction('data/fetchOfferData', (value: FullOffer) => ({ payload: value }));

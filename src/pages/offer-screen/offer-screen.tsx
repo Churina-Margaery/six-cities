@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -10,32 +11,34 @@ import Map from '../../components/map/map';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks';
 import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchOfferDataAction } from '../../store/api-actions';
 
 type OfferScreenProps = {
   reviews: Reviews;
 }
 
 function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { offerId } = useParams();
+  const offer = useAppSelector((state) => state.activeOffer);
 
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const [nearbyOfferSelected, setSelectedOffer] = useState(offers[0]);
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchOfferDataAction(offerId));
+    }
+  }, [dispatch, offerId]);
 
-  const handleOfferHover = (OfferId: string) => {
-    const offerFound = offers.find((offer) =>
-      offer.id === OfferId,
-    );
-    const currentOffer = offerFound !== undefined ? offerFound : offers[0];
-    setSelectedOffer(currentOffer);
-  };
-  const offerId = useParams().offerId as string;
-  const offerGot: Offer[] = offers.filter((off) => (off.id === offerId));
-  if (offerGot.length === 0) {
-    return <Navigate to={AppRoute.PageNotFound}></Navigate>;
+  if (offerId === undefined) {
+    return <Navigate to={AppRoute.PageNotFound} />;
   }
-  const offer: Offer = offerGot[0];
+
+  if (!offer) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="page">
       <Helmet>
@@ -132,21 +135,21 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map
+          {/* <Map
             city={offer.city}
-            offers={nearbyOffers}
+            offers={[nearbyOffers]}
             selectedPoint={nearbyOfferSelected.id}
             block='offer'
-          />
+          /> */}
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersList
+            {/* <OffersList
               offers={nearbyOffers}
               onOfferHover={handleOfferHover}
               classes='near-places__list places__list'
-            />
+            /> */}
           </section>
         </div>
         <Footer></Footer>
