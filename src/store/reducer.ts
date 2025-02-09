@@ -1,10 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   changeCity, favoriteOfferChange, sortTypeChange, loadOffers,
-  requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData, fetchNearbyOffersData
+  requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData, fetchNearbyOffersData,
+  fetchOfferCommentsData
 } from './action';
 import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
+import { Reviews } from '../types/reviews';
 import { Offer as FullOffer } from '../types/separated-offers';
 
 function priceDown(offerA: Offer, offerB: Offer) {
@@ -63,6 +65,7 @@ type InitialState = {
   error: string | null;
   isOffersDataLoading: boolean;
   activeOffer: FullOffer | null;
+  activeOfferReviews: Reviews;
 }
 
 const initialState: InitialState = {
@@ -78,6 +81,7 @@ const initialState: InitialState = {
   error: null,
   isOffersDataLoading: false,
   activeOffer: null,
+  activeOfferReviews: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -102,6 +106,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
+      state.offersByCity = selectOffers(state.offers, state.activeCityName);
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
@@ -117,6 +122,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchNearbyOffersData, (state, action) => {
       state.nearbyOffers = action.payload;
+    })
+    .addCase(fetchOfferCommentsData, (state, action) => {
+      state.activeOfferReviews = action.payload;
     });
 });
 

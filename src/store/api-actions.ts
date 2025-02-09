@@ -6,13 +6,14 @@ import { Offers } from '../types/offers.js';
 import { Offer } from '../types/separated-offers.js';
 import {
   loadOffers, requireAuthorization, setOffersDataLoadingStatus,
-  fetchOfferData, fetchNearbyOffersData
+  fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData
 } from './action';
 
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
+import { Reviews } from '../types/reviews.js';
 
 type OfferId = string;
 
@@ -94,5 +95,17 @@ export const fetchNearbyOffersAction = createAsyncThunk<void, OfferId, {
   async (offerId, { dispatch, extra: api }) => {
     const { data } = await api.get<Offers>(`${APIRoute.Offers}/${offerId}/nearby`);
     dispatch(fetchNearbyOffersData(data));
+  },
+);
+
+export const fetchOfferCommentsAction = createAsyncThunk<void, OfferId, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOfferCommentsData',
+  async (offerId, { dispatch, extra: api }) => {
+    const { data } = await api.get<Reviews>(`${APIRoute.Comments}/${offerId}`);
+    dispatch(fetchOfferCommentsData(data));
   },
 );

@@ -1,4 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
@@ -25,6 +26,7 @@ function App(): JSX.Element {
       <LoadingScreen />
     );
   }
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -64,9 +66,7 @@ function App(): JSX.Element {
           <Route
             path={`${AppRoute.OfferLogged}/:offerId`}
             element={
-              <OfferScreen
-                reviews={[]}
-              />
+              <OfferScreen />
             }
           />
           <Route

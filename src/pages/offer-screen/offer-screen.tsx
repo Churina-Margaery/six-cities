@@ -14,25 +14,22 @@ import { useState } from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { fetchOfferDataAction, fetchNearbyOffersAction } from '../../store/api-actions';
+import { fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction } from '../../store/api-actions';
 
-type OfferScreenProps = {
-  reviews: Reviews;
-}
-
-function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
+function OfferScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const { offerId } = useParams();
   const offer = useAppSelector((state) => state.activeOffer);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const reviews = useAppSelector((state) => state.activeOfferReviews);
 
-  const [nearbyOfferSelected, setSelectedOffer] = useState(nearbyOffers[0]);
+  const [nearbyOfferSelected, setSelectedOffer] = useState('1');
 
   const handleOfferHover = (OfferId: string) => {
     const offerFound = nearbyOffers.find((offerNear) =>
       offerNear.id === OfferId,
     );
-    const currentOffer = offerFound !== undefined ? offerFound : nearbyOffers[0];
+    const currentOffer = offerFound !== undefined ? offerFound.id : '1';
     setSelectedOffer(currentOffer);
   };
 
@@ -40,6 +37,8 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
     if (offerId) {
       dispatch(fetchOfferDataAction(offerId));
       dispatch(fetchNearbyOffersAction(offerId));
+      dispatch(fetchOfferCommentsAction(offerId));
+      window.scrollTo(0, 0);
     }
   }, [dispatch, offerId]);
 
@@ -150,7 +149,7 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
           <Map
             city={offer.city}
             offers={nearbyOffers}
-            selectedPoint={'1'}
+            selectedPoint={nearbyOfferSelected}
             block='offer'
           />
         </section>
