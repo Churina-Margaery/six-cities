@@ -4,7 +4,10 @@ import { AppDispatch, State } from '../types/state.js';
 
 import { Offers } from '../types/offers.js';
 import { Offer } from '../types/separated-offers.js';
-import { loadOffers, requireAuthorization, setOffersDataLoadingStatus, fetchOfferData } from './action';
+import {
+  loadOffers, requireAuthorization, setOffersDataLoadingStatus,
+  fetchOfferData, fetchNearbyOffersData
+} from './action';
 
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
@@ -78,7 +81,18 @@ export const fetchOfferDataAction = createAsyncThunk<void, OfferId, {
   'data/fetchOfferData',
   async (offerId, { dispatch, extra: api }) => {
     const { data } = await api.get<Offer>(`${APIRoute.Offers}/${offerId}`);
-    console.log(1, data);
     dispatch(fetchOfferData(data));
+  },
+);
+
+export const fetchNearbyOffersAction = createAsyncThunk<void, OfferId, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchNearbyOffersData',
+  async (offerId, { dispatch, extra: api }) => {
+    const { data } = await api.get<Offers>(`${APIRoute.Offers}/${offerId}/nearby`);
+    dispatch(fetchNearbyOffersData(data));
   },
 );

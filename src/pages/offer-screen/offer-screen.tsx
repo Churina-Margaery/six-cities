@@ -14,7 +14,7 @@ import { useState } from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { fetchOfferDataAction } from '../../store/api-actions';
+import { fetchOfferDataAction, fetchNearbyOffersAction } from '../../store/api-actions';
 
 type OfferScreenProps = {
   reviews: Reviews;
@@ -24,10 +24,22 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
   const { offerId } = useParams();
   const offer = useAppSelector((state) => state.activeOffer);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+
+  const [nearbyOfferSelected, setSelectedOffer] = useState(nearbyOffers[0]);
+
+  const handleOfferHover = (OfferId: string) => {
+    const offerFound = nearbyOffers.find((offerNear) =>
+      offerNear.id === OfferId,
+    );
+    const currentOffer = offerFound !== undefined ? offerFound : nearbyOffers[0];
+    setSelectedOffer(currentOffer);
+  };
 
   useEffect(() => {
     if (offerId) {
       dispatch(fetchOfferDataAction(offerId));
+      dispatch(fetchNearbyOffersAction(offerId));
     }
   }, [dispatch, offerId]);
 
@@ -135,21 +147,21 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
               </section>
             </div>
           </div>
-          {/* <Map
+          <Map
             city={offer.city}
-            offers={[nearbyOffers]}
-            selectedPoint={nearbyOfferSelected.id}
+            offers={nearbyOffers}
+            selectedPoint={'1'}
             block='offer'
-          /> */}
+          />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            {/* <OffersList
+            <OffersList
               offers={nearbyOffers}
               onOfferHover={handleOfferHover}
               classes='near-places__list places__list'
-            /> */}
+            />
           </section>
         </div>
         <Footer></Footer>

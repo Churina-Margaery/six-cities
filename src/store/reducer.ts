@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   changeCity, favoriteOfferChange, sortTypeChange, loadOffers,
-  requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData
+  requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData, fetchNearbyOffersData
 } from './action';
 import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
@@ -114,6 +114,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchOfferData, (state, action) => {
       state.activeOffer = action.payload;
+    })
+    .addCase(fetchNearbyOffersData, (state, action) => {
+      state.nearbyOffers = action.payload;
     });
 });
 

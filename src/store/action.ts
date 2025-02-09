@@ -19,3 +19,5 @@ export const setError = createAction<string | null>('main/setError');
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
 
 export const fetchOfferData = createAction('data/fetchOfferData', (value: FullOffer) => ({ payload: value }));
+
+export const fetchNearbyOffersData = createAction('data/fetchNearbyOffersData', (value: Offers) => ({ payload: value }));
