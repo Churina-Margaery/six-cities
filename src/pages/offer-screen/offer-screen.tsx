@@ -1,23 +1,34 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import { Offer } from '../../types/separated-offers';
-import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
-import { Navigate, useParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useState } from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { favoriteOfferChange } from '../../store/action';
 import { fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction } from '../../store/api-actions';
 
+
 function OfferScreen(): JSX.Element {
+  const navigate = useNavigate();
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
   const dispatch = useAppDispatch();
+  const handleFavoriteHover = (id: string) => {
+    if (authStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      // todo saving?
+    } else {
+      dispatch(favoriteOfferChange({ id }));
+    }
+  };
   const { offerId } = useParams();
   const offer = useAppSelector((state) => state.activeOffer);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
@@ -76,7 +87,11 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {offer.description}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  className="offer__bookmark-button button"
+                  type="button"
+                  onClick={() => handleFavoriteHover(offer.id)}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

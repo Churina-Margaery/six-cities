@@ -24,3 +24,5 @@ export const fetchOfferData = createAction('data/fetchOfferData', (value: FullOf
 export const fetchNearbyOffersData = createAction('data/fetchNearbyOffersData', (value: Offers) => ({ payload: value }));
 
 export const fetchOfferCommentsData = createAction('data/fetchOfferCommentsData', (value: Reviews) => ({ payload: value }));
+
+export const setEmail = createAction('user/setEmail', (value: string) => ({ payload: value }));

@@ -2,9 +2,62 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 
 import { AppRoute } from '../../const';
+import { AuthorizationStatus } from '../../const';
+
+type AuthDataProps = {
+  authStatus: AuthorizationStatus;
+  userEmail: string;
+  favoritesCount: number;
+}
+
+function AuthData({ authStatus, userEmail, favoritesCount }: AuthDataProps): JSX.Element {
+
+  const handleSignOut = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (loginRef.current !== null && passwordRef.current !== null) {
+      dispatch(loginAction({
+        email: loginRef.current.value,
+        password: passwordRef.current.value
+      }));
+    }
+  };
+
+  if (authStatus === AuthorizationStatus.Auth) {
+    return (
+      <ul className="header__nav-list">
+        <li className="header__nav-item user">
+          <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+            <div className="header__avatar-wrapper user__avatar-wrapper">
+            </div>
+            <span className="header__user-name user__name">{userEmail}</span>
+            <span className="header__favorite-count">{favoritesCount}</span>
+          </Link>
+        </li>
+        <li className="header__nav-item">
+          <a className="header__nav-link">
+            <span className="header__signout" onClick={handleSignOut}>Sign out</span>
+          </a>
+        </li>
+      </ul>
+    );
+  }
+  return (
+    <ul className="header__nav-list">
+      <li className="header__nav-item">
+        <Link className="header__nav-link" to={AppRoute.Login}>
+          <span className="header__signout">Sign in</span>
+        </Link>
+      </li>
+    </ul>
+  );
+}
 
 function Header(): JSX.Element {
   const navigate = useNavigate();
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const userEmail = useAppSelector((state) => state.userEmail);
+  const favCount = useAppSelector((state) => state.favoritesCount);
   return (
     <header className="header">
       <div className="container">
@@ -15,21 +68,11 @@ function Header(): JSX.Element {
             </a>
           </div>
           <nav className="header__nav">
-            <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <Link className="header__nav-link header__nav-link--profile" to="/favorites">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">{useAppSelector((state) => state.favoritesCount)}</span>
-                </Link>
-              </li>
-              <li className="header__nav-item">
-                <Link className="header__nav-link" to="/">
-                  <span className="header__signout">Sign out</span>
-                </Link>
-              </li>
-            </ul>
+            <AuthData
+              authStatus={authStatus}
+              userEmail={userEmail}
+              favoritesCount={favCount}
+            />
           </nav>
         </div>
       </div>

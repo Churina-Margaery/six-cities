@@ -1,18 +1,25 @@
-
-import { useAppDispatch } from '../../hooks';
-import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { Link, useNavigate } from 'react-router-dom';
 import { favoriteOfferChange } from '../../store/action';
 
 import { Offer } from '../../types/offers';
+import { AppRoute, AuthorizationStatus } from '../../const';
 
 type ApartmentCardProps = {
   offer: Offer;
 }
 
 function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
+  const navigate = useNavigate();
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
   const dispatch = useAppDispatch();
   const handleFavoriteHovers = (id: string) => {
-    dispatch(favoriteOfferChange({ id }));
+    if (authStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      // todo saving?
+    } else {
+      dispatch(favoriteOfferChange({ id }));
+    }
   };
 
   return (

@@ -6,7 +6,8 @@ import { Offers } from '../types/offers.js';
 import { Offer } from '../types/separated-offers.js';
 import {
   loadOffers, requireAuthorization, setOffersDataLoadingStatus,
-  fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData
+  fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData,
+  setEmail
 } from './action';
 
 import { saveToken, dropToken } from '../services/token';
@@ -42,6 +43,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     const { data: { token } } = await api.post<UserData>(APIRoute.Login, { email, password });
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(setEmail(email));
   },
 );
 
@@ -55,6 +57,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(APIRoute.Logout);
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(setEmail(''));
   },
 );
 
@@ -68,6 +71,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     try {
       await api.get(APIRoute.Login);
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      //email?? todo
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
