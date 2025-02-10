@@ -26,3 +26,7 @@ export const fetchNearbyOffersData = createAction('data/fetchNearbyOffersData', 
 export const fetchOfferCommentsData = createAction('data/fetchOfferCommentsData', (value: Reviews) => ({ payload: value }));
 
 export const setEmail = createAction('user/setEmail', (value: string) => ({ payload: value }));
+
+export const logIn = createAction('user/logIn');
+
+export const logOut = createAction('user/logOut', (value: Offers) => ({ payload: value }));

@@ -7,7 +7,7 @@ import { Offer } from '../types/separated-offers.js';
 import {
   loadOffers, requireAuthorization, setOffersDataLoadingStatus,
   fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData,
-  setEmail
+  setEmail, logIn, logOut
 } from './action';
 
 import { saveToken, dropToken } from '../services/token';
@@ -44,6 +44,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(setEmail(email));
+    dispatch(logIn());
   },
 );
 
@@ -58,6 +59,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(setEmail(''));
+    dispatch(logOut([]));
   },
 );
 

@@ -154,10 +154,11 @@ function OfferScreen(): JSX.Element {
                 <ReviewsList
                   reviews={reviews}
                 />
-                <CommentForm
-                  review={''}
-                  rating={0}
-                />
+                {(authStatus === AuthorizationStatus.Auth) &&
+                  <CommentForm
+                    review={''}
+                    rating={0}
+                  />}
               </section>
             </div>
           </div>

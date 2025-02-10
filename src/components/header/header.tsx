@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 
-import { AppRoute } from '../../const';
-import { AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { logoutAction } from '../../store/api-actions';
+import { useAppDispatch } from '../../hooks';
 
 type AuthDataProps = {
   authStatus: AuthorizationStatus;
@@ -11,16 +12,10 @@ type AuthDataProps = {
 }
 
 function AuthData({ authStatus, userEmail, favoritesCount }: AuthDataProps): JSX.Element {
+  const dispatch = useAppDispatch();
 
-  const handleSignOut = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
-    if (loginRef.current !== null && passwordRef.current !== null) {
-      dispatch(loginAction({
-        email: loginRef.current.value,
-        password: passwordRef.current.value
-      }));
-    }
+  const handleSignOut = () => {
+    dispatch(logoutAction());
   };
 
   if (authStatus === AuthorizationStatus.Auth) {

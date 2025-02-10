@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   changeCity, favoriteOfferChange, sortTypeChange, loadOffers,
   requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData, fetchNearbyOffersData,
-  fetchOfferCommentsData, setEmail
+  fetchOfferCommentsData, setEmail, logIn, logOut
 } from './action';
 import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
@@ -130,6 +130,13 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchOfferCommentsData, (state, action) => {
       state.activeOfferReviews = action.payload;
+    })
+    .addCase(logIn, (state) => {
+      //state.favoriteOffers = [];
+    })
+    .addCase(logOut, (state, action) => {
+      state.favoriteOffers = getFavorites([]);
+      state.favoritesCount = 0;
     });
 });
 
