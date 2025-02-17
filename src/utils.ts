@@ -1,7 +1,12 @@
 import { LocationCity } from './types/offers';
+import { Offers } from './types/offers';
 
 export function getPluralEnding(num: number, str: string) {
   return num === 1 ? str : `${str}s`;
+}
+
+export function getOfferStatusById(offers: Offers, id: string) {
+  return offers.find((offer) => offer.id === id)?.isFavorite ?? 0;
 }
 
 export function getCityParams(city: string): LocationCity {

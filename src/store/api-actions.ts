@@ -7,10 +7,10 @@ import { Offer } from '../types/separated-offers.js';
 import {
   loadOffers, requireAuthorization, setOffersDataLoadingStatus,
   fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData,
-  setEmail, logIn, logOut
+  setEmail, logIn, logOut, favoriteOfferChange
 } from './action';
 
-import { saveToken, dropToken } from '../services/token';
+import { saveToken, dropToken, getToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
@@ -27,7 +27,12 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   'data/loadOffers',
   async (_arg, { dispatch, extra: api }) => {
     dispatch(setOffersDataLoadingStatus(true));
-    const { data } = await api.get<Offers>(APIRoute.Offers);
+    const token = getToken();
+    const { data } = await api.get<Offers>(APIRoute.Offers, {
+      headers: {
+        'X-Token': token
+      }
+    });
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadOffers(data));
   },
@@ -44,6 +49,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(setEmail(email));
+    dispatch(fetchOffersAction());
     dispatch(logIn());
   },
 );
@@ -113,5 +119,20 @@ export const fetchOfferCommentsAction = createAsyncThunk<void, OfferId, {
   async (offerId, { dispatch, extra: api }) => {
     const { data } = await api.get<Reviews>(`${APIRoute.Comments}/${offerId}`);
     dispatch(fetchOfferCommentsData(data));
+  },
+);
+
+export const setFavoriteStatusAction = createAsyncThunk<void, { offerId: OfferId; isFavorite: number }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/setFavoriteStatus',
+  async ({ offerId, isFavorite }, { dispatch, extra: api }) => {
+    const { data } = await api.post<Offer>(
+      `${APIRoute.Favorite}/${offerId}/${isFavorite}`,
+      null
+    );
+    dispatch(favoriteOfferChange(data));
   },
 );

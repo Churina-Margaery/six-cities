@@ -14,19 +14,26 @@ import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { favoriteOfferChange } from '../../store/action';
-import { fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction } from '../../store/api-actions';
+import {
+  fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction,
+  setFavoriteStatusAction
+} from '../../store/api-actions';
+
+import { getOfferStatusById } from '../../utils';
 
 
 function OfferScreen(): JSX.Element {
   const navigate = useNavigate();
   const authStatus = useAppSelector((state) => state.authorizationStatus);
+  let isFav = (useAppSelector((state) => state.activeOffer?.isFavorite) ? 0 : 1);
   const dispatch = useAppDispatch();
   const handleFavoriteHover = (id: string) => {
     if (authStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
       // todo saving?
     } else {
-      dispatch(favoriteOfferChange({ id }));
+      dispatch(setFavoriteStatusAction({ offerId: id, isFavorite: isFav }));
+      isFav = (isFav === 1) ? 0 : 1;
     }
   };
   const { offerId } = useParams();
@@ -50,8 +57,10 @@ function OfferScreen(): JSX.Element {
       dispatch(fetchNearbyOffersAction(offerId));
       dispatch(fetchOfferCommentsAction(offerId));
       window.scrollTo(0, 0);
+    } else {
+      navigate(AppRoute.PageNotFound);
     }
-  }, [dispatch, offerId]);
+  }, [dispatch, navigate, offerId]);
 
   if (offerId === undefined) {
     return <Navigate to={AppRoute.PageNotFound} />;
@@ -88,7 +97,7 @@ function OfferScreen(): JSX.Element {
                   {offer.description}
                 </h1>
                 <button
-                  className="offer__bookmark-button button"
+                  className={`offer__bookmark-button button ${offer.isFavorite && 'offer__bookmark-button--active'}`}
                   type="button"
                   onClick={() => handleFavoriteHover(offer.id)}
                 >

@@ -1,10 +1,8 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
 
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
-import OfferNotLoggedScreen from '../../pages/offer-not-logged-screen/offer-not-logged-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PageNotFoundScreen from '../../pages/page-not-found-screen/page-not-found-screen';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
@@ -72,13 +70,7 @@ function App(): JSX.Element {
           <Route
             path={`${AppRoute.OfferNotLogged}/:offerId`}
             element={
-              <PrivateRoute
-                authorizationStatus={authorizationStatus}
-                restrictedFor={AuthorizationStatus.Auth}
-                redirectTo={AppRoute.Root}
-              >
-                <OfferNotLoggedScreen />
-              </PrivateRoute>
+              <OfferScreen />
             }
           />
           <Route

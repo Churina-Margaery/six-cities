@@ -37,6 +37,13 @@ function getFavorites(offers: Offers) {
   return offers.filter((offer) => offer.isFavorite);
 }
 
+function cleanFavorites(offers: Offers) {
+  return offers.map((item) => ({
+    ...item,
+    isFavorite: false
+  }));
+}
+
 function sortChange(offers: Offers, type: string, popularOffers: Offers) {
   switch (type) {
     case 'Price: low to high':
@@ -91,7 +98,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, action) => {
       state.activeCityName = action.payload;
       state.offersByCity = selectOffers(state.offers, action.payload);
-      state.savedPopularSort = selectOffers([], action.payload);
+      state.savedPopularSort = state.offersByCity;
       state.activeSort = 'Popular';
     })
     .addCase(favoriteOfferChange, (state, action) => {
@@ -101,6 +108,9 @@ const reducer = createReducer(initialState, (builder) => {
       state.favoritesCount = countFavorites(state.offers);
       state.favoriteOffers = getFavorites(state.offers);
       state.savedPopularSort = toggleFavoriteCard(state.savedPopularSort, action.payload.id);
+      if (state.activeOffer !== null && state.activeOffer.id === action.payload.id) {
+        state.activeOffer.isFavorite = !state.activeOffer.isFavorite;
+      }
     })
     .addCase(sortTypeChange, (state, action) => {
       state.offersByCity = sortChange(state.offersByCity, action.payload, state.savedPopularSort);
@@ -109,6 +119,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
       state.offersByCity = selectOffers(state.offers, state.activeCityName);
+      state.savedPopularSort = selectOffers(state.offers, state.activeCityName);
+      state.favoriteOffers = getFavorites(state.offers);
+      state.favoritesCount = state.favoriteOffers.length;
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
@@ -131,12 +144,19 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(fetchOfferCommentsData, (state, action) => {
       state.activeOfferReviews = action.payload;
     })
-    .addCase(logIn, (state) => {
-      //state.favoriteOffers = [];
+    .addCase(logIn, (state, action) => {
+      //state.favoritesCount = action.payload.length;
     })
-    .addCase(logOut, (state, action) => {
+    .addCase(logOut, (state) => {
       state.favoriteOffers = getFavorites([]);
       state.favoritesCount = 0;
+      state.offers = cleanFavorites(state.offers);
+      state.offersByCity = cleanFavorites(state.offersByCity);
+      state.nearbyOffers = cleanFavorites(state.nearbyOffers);
+      state.savedPopularSort = cleanFavorites(state.savedPopularSort);
+      if (state.activeOffer) {
+        state.activeOffer.isFavorite = false;
+      }
     });
 });
 

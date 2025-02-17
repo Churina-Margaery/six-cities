@@ -1,7 +1,10 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { getToken } from './token';
+import { StatusCodes } from 'http-status-codes';
 
-const BACKEND_URL = 'https://14.design.htmlacademy.pro/six-cities';
+import { AppRoute } from '../const';
+
+const BACKEND_URL = <string>import.meta.env.VITE_SERVER;
 const REQUEST_TIMEOUT = 5000;
 
 export const createAPI = (): AxiosInstance => {
@@ -22,6 +25,16 @@ export const createAPI = (): AxiosInstance => {
     },
   );
 
+  api.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError<{ error: string }>) => {
+      if (error.response?.status === StatusCodes.NOT_FOUND) {
+        //to not found
+        //browserHistory.push(AppRoute.PageNotFound)
+      }
+      throw error;
+    }
+  );
 
   return api;
 };

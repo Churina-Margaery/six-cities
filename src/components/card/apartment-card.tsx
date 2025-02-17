@@ -1,9 +1,11 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { favoriteOfferChange } from '../../store/action';
+import { setFavoriteStatusAction } from '../../store/api-actions';
 
 import { Offer } from '../../types/offers';
 import { AppRoute, AuthorizationStatus } from '../../const';
+import { favoriteOfferChange } from '../../store/action';
+import { getOfferStatusById } from '../../utils';
 
 type ApartmentCardProps = {
   offer: Offer;
@@ -12,13 +14,16 @@ type ApartmentCardProps = {
 function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
   const navigate = useNavigate();
   const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const offers = useAppSelector((state) => state.offers);
   const dispatch = useAppDispatch();
+  let isFav = (!getOfferStatusById(offers, offer.id) ? 0 : 1);
   const handleFavoriteHovers = (id: string) => {
     if (authStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
       // todo saving?
     } else {
-      dispatch(favoriteOfferChange({ id }));
+      dispatch(setFavoriteStatusAction({ offerId: id, isFavorite: isFav }));
+      isFav = (isFav === 1) ? 0 : 1;
     }
   };
 
