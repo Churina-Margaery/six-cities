@@ -1,8 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, favoriteOfferChange, sortTypeChange } from './action';
-import { offers as startOffers } from '../mocks/offers';
+import {
+  changeCity, favoriteOfferChange, sortTypeChange, loadOffers,
+  requireAuthorization, setError, setOffersDataLoadingStatus, fetchOfferData, fetchNearbyOffersData,
+  fetchOfferCommentsData, setEmail, logIn, logOut
+} from './action';
+import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
-
+import { Reviews } from '../types/reviews';
+import { Offer as FullOffer } from '../types/separated-offers';
 
 function priceDown(offerA: Offer, offerB: Offer) {
   return offerA.price - offerB.price;
@@ -32,6 +37,13 @@ function getFavorites(offers: Offers) {
   return offers.filter((offer) => offer.isFavorite);
 }
 
+function cleanFavorites(offers: Offers) {
+  return offers.map((item) => ({
+    ...item,
+    isFavorite: false
+  }));
+}
+
 function sortChange(offers: Offers, type: string, popularOffers: Offers) {
   switch (type) {
     case 'Price: low to high':
@@ -47,15 +59,38 @@ function sortChange(offers: Offers, type: string, popularOffers: Offers) {
   return offers;
 }
 
-const initialState = {
+type InitialState = {
+  activeCityName: string;
+  offersByCity: Offers;
+  favoritesCount: number;
+  offers: Offers;
+  nearbyOffers: Offers;
+  favoriteOffers: Offers;
+  activeSort: string;
+  savedPopularSort: Offers;
+  authorizationStatus: AuthorizationStatus;
+  error: string | null;
+  isOffersDataLoading: boolean;
+  activeOffer: FullOffer | null;
+  activeOfferReviews: Reviews;
+  userEmail: string;
+}
+
+const initialState: InitialState = {
   activeCityName: 'Paris',
-  offersByCity: selectOffers(startOffers, 'Paris'),
-  favoritesCount: countFavorites(startOffers),
-  offers: startOffers,
-  nearbyOffers: startOffers,
-  favoriteOffers: getFavorites(startOffers),
+  offersByCity: selectOffers([], 'Paris'),
+  favoritesCount: countFavorites([]),
+  offers: [],
+  nearbyOffers: [],
+  favoriteOffers: getFavorites([]),
   activeSort: 'Popular',
-  savedPopularSort: selectOffers(startOffers, 'Paris'),
+  savedPopularSort: selectOffers([], 'Paris'),
+  authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
+  isOffersDataLoading: false,
+  activeOffer: null,
+  activeOfferReviews: [],
+  userEmail: '',
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -63,7 +98,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, action) => {
       state.activeCityName = action.payload;
       state.offersByCity = selectOffers(state.offers, action.payload);
-      state.savedPopularSort = selectOffers(startOffers, action.payload);
+      state.savedPopularSort = state.offersByCity;
       state.activeSort = 'Popular';
     })
     .addCase(favoriteOfferChange, (state, action) => {
@@ -73,10 +108,55 @@ const reducer = createReducer(initialState, (builder) => {
       state.favoritesCount = countFavorites(state.offers);
       state.favoriteOffers = getFavorites(state.offers);
       state.savedPopularSort = toggleFavoriteCard(state.savedPopularSort, action.payload.id);
+      if (state.activeOffer !== null && state.activeOffer.id === action.payload.id) {
+        state.activeOffer.isFavorite = !state.activeOffer.isFavorite;
+      }
     })
     .addCase(sortTypeChange, (state, action) => {
       state.offersByCity = sortChange(state.offersByCity, action.payload, state.savedPopularSort);
       state.activeSort = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+      state.offersByCity = selectOffers(state.offers, state.activeCityName);
+      state.savedPopularSort = selectOffers(state.offers, state.activeCityName);
+      state.favoriteOffers = getFavorites(state.offers);
+      state.favoritesCount = state.favoriteOffers.length;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setEmail, (state, action) => {
+      state.userEmail = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
+    })
+    .addCase(fetchOfferData, (state, action) => {
+      state.activeOffer = action.payload;
+    })
+    .addCase(fetchNearbyOffersData, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
+    .addCase(fetchOfferCommentsData, (state, action) => {
+      state.activeOfferReviews = action.payload;
+    })
+    .addCase(logIn, () => {
+      //state.favoritesCount = action.payload.length;
+    })
+    .addCase(logOut, (state) => {
+      state.favoriteOffers = getFavorites([]);
+      state.favoritesCount = 0;
+      state.offers = cleanFavorites(state.offers);
+      state.offersByCity = cleanFavorites(state.offersByCity);
+      state.nearbyOffers = cleanFavorites(state.nearbyOffers);
+      state.savedPopularSort = cleanFavorites(state.savedPopularSort);
+      if (state.activeOffer) {
+        state.activeOffer.isFavorite = false;
+      }
     });
 });
 

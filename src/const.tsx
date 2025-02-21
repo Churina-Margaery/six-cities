@@ -1,5 +1,7 @@
 const sixCities: string[] = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
+export const TIMEOUT_SHOW_ERROR = 2000;
+
 enum AppRoute {
   Favorites = '/favorites',
   EmptyFavorites = '/empty-favorites',
@@ -15,6 +17,14 @@ enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
+}
+
+enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+  Comments = '/comments',
+  Favorite = '/favorite',
 }
 
 const SortTypes = [
@@ -35,4 +45,4 @@ const URL_MARKER_DEFAULT: string = 'https://assets.htmlacademy.ru/content/intens
 
 const URL_MARKER_CURRENT: string = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
 
-export { AppRoute, AuthorizationStatus, SortTypes, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, sixCities };
+export { AppRoute, AuthorizationStatus, APIRoute, SortTypes, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, sixCities };

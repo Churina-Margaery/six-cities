@@ -1,42 +1,72 @@
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import { Offer } from '../../types/separated-offers';
-import { offers } from '../../mocks/separated-offers';
-import { Reviews } from '../../types/reviews';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
-import { Navigate, useParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks';
 import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import {
+  fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction,
+  setFavoriteStatusAction
+} from '../../store/api-actions';
 
-type OfferScreenProps = {
-  reviews: Reviews;
-}
 
-function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
-
+function OfferScreen(): JSX.Element {
+  const navigate = useNavigate();
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  let isFav = (useAppSelector((state) => state.activeOffer?.isFavorite) ? 0 : 1);
+  const dispatch = useAppDispatch();
+  const handleFavoriteHover = (id: string) => {
+    if (authStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      // todo saving?
+    } else {
+      dispatch(setFavoriteStatusAction({ offerId: id, isFavorite: isFav }));
+      isFav = (isFav === 1) ? 0 : 1;
+    }
+  };
+  const { offerId } = useParams();
+  const offer = useAppSelector((state) => state.activeOffer);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const [nearbyOfferSelected, setSelectedOffer] = useState(offers[0]);
+  const reviews = useAppSelector((state) => state.activeOfferReviews);
+
+  const [nearbyOfferSelected, setSelectedOffer] = useState('1');
 
   const handleOfferHover = (OfferId: string) => {
-    const offerFound = offers.find((offer) =>
-      offer.id === OfferId,
+    const offerFound = nearbyOffers.find((offerNear) =>
+      offerNear.id === OfferId,
     );
-    const currentOffer = offerFound !== undefined ? offerFound : offers[0];
+    const currentOffer = offerFound !== undefined ? offerFound.id : '1';
     setSelectedOffer(currentOffer);
   };
-  const offerId = useParams().offerId as string;
-  const offerGot: Offer[] = offers.filter((off) => (off.id === offerId));
-  if (offerGot.length === 0) {
-    return <Navigate to={AppRoute.PageNotFound}></Navigate>;
+
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchOfferDataAction(offerId));
+      dispatch(fetchNearbyOffersAction(offerId));
+      dispatch(fetchOfferCommentsAction(offerId));
+      window.scrollTo(0, 0);
+    } else {
+      navigate(AppRoute.PageNotFound);
+    }
+  }, [dispatch, navigate, offerId]);
+
+  if (offerId === undefined) {
+    return <Navigate to={AppRoute.PageNotFound} />;
   }
-  const offer: Offer = offerGot[0];
+
+  if (!offer) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="page">
       <Helmet>
@@ -63,7 +93,11 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
                 <h1 className="offer__name">
                   {offer.description}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  className={`offer__bookmark-button button ${offer.isFavorite && 'offer__bookmark-button--active'}`}
+                  type="button"
+                  onClick={() => handleFavoriteHover(offer.id)}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -126,17 +160,17 @@ function OfferScreen({ reviews }: OfferScreenProps): JSX.Element {
                 <ReviewsList
                   reviews={reviews}
                 />
-                <CommentForm
-                  review={''}
-                  rating={0}
-                />
+                {(authStatus === AuthorizationStatus.Auth) &&
+                  <CommentForm
+                    offerId={offerId}
+                  />}
               </section>
             </div>
           </div>
           <Map
             city={offer.city}
             offers={nearbyOffers}
-            selectedPoint={nearbyOfferSelected.id}
+            selectedPoint={nearbyOfferSelected}
             block='offer'
           />
         </section>
