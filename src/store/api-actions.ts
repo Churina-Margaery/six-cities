@@ -7,7 +7,7 @@ import { Offer } from '../types/separated-offers.js';
 import {
   loadOffers, requireAuthorization, setOffersDataLoadingStatus,
   fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData,
-  setEmail, logIn, logOut, favoriteOfferChange, updateComments
+  setEmail, logIn, logOut, favoriteOfferChange
 } from './action';
 
 import { saveToken, dropToken, getToken } from '../services/token';
@@ -148,7 +148,7 @@ export const postCommentAction = createAsyncThunk<void, {
 }>(
   'data/postComment',
   async ({ offerId, rating, comment }, { dispatch, extra: api }) => {
-    const { data } = await api.post<Comment>(
+    await api.post<Comment>(
       `${APIRoute.Comments}/${offerId}`,
       { comment, rating }
     );

@@ -13,12 +13,10 @@ import { useState } from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import { getPluralEnding } from '../../utils';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { favoriteOfferChange } from '../../store/action';
 import {
   fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction,
   setFavoriteStatusAction
 } from '../../store/api-actions';
-
 
 
 function OfferScreen(): JSX.Element {

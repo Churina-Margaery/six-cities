@@ -4,7 +4,6 @@ import { setFavoriteStatusAction } from '../../store/api-actions';
 
 import { Offer } from '../../types/offers';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { favoriteOfferChange } from '../../store/action';
 import { getOfferStatusById } from '../../utils';
 
 type ApartmentCardProps = {
@@ -16,7 +15,7 @@ function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
   const authStatus = useAppSelector((state) => state.authorizationStatus);
   const offers = useAppSelector((state) => state.offers);
   const dispatch = useAppDispatch();
-  let isFav = (!getOfferStatusById(offers, offer.id) ? 0 : 1);
+  let isFav = (getOfferStatusById(offers, offer.id) ? 0 : 1);
   const handleFavoriteHovers = (id: string) => {
     if (authStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);

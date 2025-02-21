@@ -144,7 +144,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(fetchOfferCommentsData, (state, action) => {
       state.activeOfferReviews = action.payload;
     })
-    .addCase(logIn, (state, action) => {
+    .addCase(logIn, () => {
       //state.favoritesCount = action.payload.length;
     })
     .addCase(logOut, (state) => {

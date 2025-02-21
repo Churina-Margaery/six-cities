@@ -2,8 +2,6 @@ import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'ax
 import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
 
-import { AppRoute } from '../const';
-
 const BACKEND_URL = <string>import.meta.env.VITE_SERVER;
 const REQUEST_TIMEOUT = 5000;
 
@@ -29,7 +27,7 @@ export const createAPI = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<{ error: string }>) => {
       if (error.response?.status === StatusCodes.NOT_FOUND) {
-        //to not found
+        //todo to not found
         //browserHistory.push(AppRoute.PageNotFound)
       }
       throw error;
