@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { Fragment } from 'react';
 
 import { postCommentAction } from '../../store/api-actions';
