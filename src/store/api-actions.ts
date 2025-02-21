@@ -7,7 +7,7 @@ import { Offer } from '../types/separated-offers.js';
 import {
   loadOffers, requireAuthorization, setOffersDataLoadingStatus,
   fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData,
-  setEmail, logIn, logOut, favoriteOfferChange
+  setEmail, logIn, logOut, favoriteOfferChange, updateComments
 } from './action';
 
 import { saveToken, dropToken, getToken } from '../services/token';
@@ -134,5 +134,24 @@ export const setFavoriteStatusAction = createAsyncThunk<void, { offerId: OfferId
       null
     );
     dispatch(favoriteOfferChange(data));
+  },
+);
+
+export const postCommentAction = createAsyncThunk<void, {
+  offerId: OfferId;
+  rating: number;
+  comment: string;
+}, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/postComment',
+  async ({ offerId, rating, comment }, { dispatch, extra: api }) => {
+    const { data } = await api.post<Comment>(
+      `${APIRoute.Comments}/${offerId}`,
+      { comment, rating }
+    );
+    dispatch(fetchOfferCommentsAction(offerId));
   },
 );

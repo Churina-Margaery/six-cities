@@ -19,7 +19,6 @@ import {
   setFavoriteStatusAction
 } from '../../store/api-actions';
 
-import { getOfferStatusById } from '../../utils';
 
 
 function OfferScreen(): JSX.Element {
@@ -165,8 +164,7 @@ function OfferScreen(): JSX.Element {
                 />
                 {(authStatus === AuthorizationStatus.Auth) &&
                   <CommentForm
-                    review={''}
-                    rating={0}
+                    offerId={offerId}
                   />}
               </section>
             </div>
