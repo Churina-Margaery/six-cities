@@ -4,6 +4,7 @@ import { useAppSelector } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks';
+import React from 'react';
 
 type AuthDataProps = {
   authStatus: AuthorizationStatus;
@@ -75,4 +76,4 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export default React.memo(Header);

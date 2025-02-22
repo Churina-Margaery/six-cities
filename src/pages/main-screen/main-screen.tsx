@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import OffersList from '../../components/offers-list/offers-list';
 import { Offers } from '../../types/offers';
@@ -48,9 +48,9 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
     setSelectedOffer(currentOffer);
   };
 
-  const handleCityHover = (city: string) => {
+  const handleCityHover = useCallback((city: string) => {
     dispatch(changeCity(city));
-  };
+  }, [dispatch]);
 
   return (
     <div className="page page--gray page--main">

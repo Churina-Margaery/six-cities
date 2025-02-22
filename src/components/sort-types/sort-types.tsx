@@ -57,4 +57,4 @@ function SortChoice(): JSX.Element {
   );
 }
 
-export default SortChoice;
+export default React.memo(SortChoice);
