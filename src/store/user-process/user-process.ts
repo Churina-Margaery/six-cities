@@ -24,9 +24,18 @@ export const userSlice = createSlice({
     logOut: (state) => {
       state.authorizationStatus = AuthorizationStatus.NoAuth;
       state.userEmail = '';
-    },
+      // state.favoriteOffers = getFavorites([]); $
+      // state.favoritesCount = 0;
+      // state.offers = cleanFavorites(state.offers);
+      // state.offersByCity = cleanFavorites(state.offersByCity);
+      // state.nearbyOffers = cleanFavorites(state.nearbyOffers);
+      // state.savedPopularSort = cleanFavorites(state.savedPopularSort);
+      // if (state.activeOffer) {
+      //   state.activeOffer.isFavorite = false;
+    }
   },
-});
+},
+);
 
 export const { requireAuthorization, setEmail, logIn, logOut } = userSlice.actions;
 export default userSlice.reducer;

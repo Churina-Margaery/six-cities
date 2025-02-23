@@ -96,69 +96,69 @@ const initialState: InitialState = {
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, action) => {
-      state.activeCityName = action.payload;
-      state.offersByCity = selectOffers(state.offers, action.payload);
-      state.savedPopularSort = state.offersByCity;
-      state.activeSort = SortTypes.Popular;
-    })
-    .addCase(favoriteOfferChange, (state, action) => {
-      state.offers = toggleFavoriteCard(state.offers, action.payload.id);
-      state.offersByCity = toggleFavoriteCard(state.offersByCity, action.payload.id);
-      state.nearbyOffers = toggleFavoriteCard(state.nearbyOffers, action.payload.id);
-      state.favoritesCount = countFavorites(state.offers);
-      state.favoriteOffers = getFavorites(state.offers);
-      state.savedPopularSort = toggleFavoriteCard(state.savedPopularSort, action.payload.id);
-      if (state.activeOffer !== null && state.activeOffer.id === action.payload.id) {
-        state.activeOffer.isFavorite = !state.activeOffer.isFavorite;
-      }
-    })
-    .addCase(sortTypeChange, (state, action) => {
-      state.offersByCity = sortChange(state.offersByCity, action.payload, state.savedPopularSort);
-      state.activeSort = action.payload;
-    })
-    .addCase(loadOffers, (state, action) => {
-      state.offers = action.payload;
-      state.offersByCity = selectOffers(state.offers, state.activeCityName);
-      state.savedPopularSort = selectOffers(state.offers, state.activeCityName);
-      state.favoriteOffers = getFavorites(state.offers);
-      state.favoritesCount = state.favoriteOffers.length;
-    })
-    // .addCase(requireAuthorization, (state, action) => {
-    //   state.authorizationStatus = action.payload;
-    // })
-    // .addCase(setEmail, (state, action) => {
-    //   state.userEmail = action.payload;
-    // })
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
-    })
-    .addCase(setOffersDataLoadingStatus, (state, action) => {
-      state.isOffersDataLoading = action.payload;
-    })
-    .addCase(fetchOfferData, (state, action) => {
-      state.activeOffer = action.payload;
-    })
-    .addCase(fetchNearbyOffersData, (state, action) => {
-      state.nearbyOffers = action.payload;
-    })
-    .addCase(fetchOfferCommentsData, (state, action) => {
-      state.activeOfferReviews = action.payload;
-    // })
-    // .addCase(logIn, () => {
-    //   //state.favoritesCount = action.payload.length;
-    // })
-    .addCase(logOut, (state) => {
-        state.favoriteOffers = getFavorites([]);
-        state.favoritesCount = 0;
-        state.offers = cleanFavorites(state.offers);
-        state.offersByCity = cleanFavorites(state.offersByCity);
-        state.nearbyOffers = cleanFavorites(state.nearbyOffers);
-        state.savedPopularSort = cleanFavorites(state.savedPopularSort);
-        if (state.activeOffer) {
-          state.activeOffer.isFavorite = false;
-        }
-      });
+  // .addCase(changeCity, (state, action) => {
+  //   state.activeCityName = action.payload;
+  //   state.offersByCity = selectOffers(state.offers, action.payload);
+  //   state.savedPopularSort = state.offersByCity;
+  //   state.activeSort = SortTypes.Popular;
+  // })
+  // .addCase(favoriteOfferChange, (state, action) => {
+  //   state.offers = toggleFavoriteCard(state.offers, action.payload.id);
+  //   state.offersByCity = toggleFavoriteCard(state.offersByCity, action.payload.id);
+  //   state.nearbyOffers = toggleFavoriteCard(state.nearbyOffers, action.payload.id);
+  //   state.favoritesCount = countFavorites(state.offers);
+  //   state.favoriteOffers = getFavorites(state.offers);
+  //   state.savedPopularSort = toggleFavoriteCard(state.savedPopularSort, action.payload.id);
+  //   if (state.activeOffer !== null && state.activeOffer.id === action.payload.id) {
+  //     state.activeOffer.isFavorite = !state.activeOffer.isFavorite;
+  //   }
+  // })
+  // .addCase(sortTypeChange, (state, action) => {
+  //   state.offersByCity = sortChange(state.offersByCity, action.payload, state.savedPopularSort);
+  //   state.activeSort = action.payload;
+  // })
+  // .addCase(loadOffers, (state, action) => {
+  //   state.offers = action.payload;
+  //   state.offersByCity = selectOffers(state.offers, state.activeCityName);
+  //   state.savedPopularSort = selectOffers(state.offers, state.activeCityName);
+  //   state.favoriteOffers = getFavorites(state.offers);
+  //   state.favoritesCount = state.favoriteOffers.length;
+  // })
+  // // .addCase(requireAuthorization, (state, action) => {
+  //   state.authorizationStatus = action.payload;
+  // })
+  // .addCase(setEmail, (state, action) => {
+  //   state.userEmail = action.payload;
+  // })
+  // .addCase(setError, (state, action) => {
+  //   state.error = action.payload;
+  // })
+  // .addCase(setOffersDataLoadingStatus, (state, action) => {
+  //   state.isOffersDataLoading = action.payload;
+  // })
+  // .addCase(fetchOfferData, (state, action) => {
+  //     state.activeOffer = action.payload;
+  //   })
+  // .addCase(fetchNearbyOffersData, (state, action) => {
+  //   state.nearbyOffers = action.payload;
+  // })
+  // .addCase(fetchOfferCommentsData, (state, action) => {
+  //   state.activeOfferReviews = action.payload;
+  // })
+  // .addCase(logIn, () => {
+  //   //state.favoritesCount = action.payload.length;
+  // })
+  // .addCase(logOut, (state) => {
+  //   state.favoriteOffers = getFavorites([]);
+  //   state.favoritesCount = 0;
+  //   state.offers = cleanFavorites(state.offers);
+  //   state.offersByCity = cleanFavorites(state.offersByCity);
+  //   state.nearbyOffers = cleanFavorites(state.nearbyOffers);
+  //   state.savedPopularSort = cleanFavorites(state.savedPopularSort);
+  //   if (state.activeOffer) {
+  //     state.activeOffer.isFavorite = false;
+  //   }
+  // });
 });
 
 export { reducer };
