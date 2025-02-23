@@ -1,15 +1,17 @@
 import { useState } from 'react';
+import React from 'react';
+
 import { SortTypes } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { sortTypeChange } from '../../store/action';
-import React from 'react';
+
 
 function SortChoice(): JSX.Element {
   const optionActive = useAppSelector((state) => state.activeSort);
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSortTypeChange = (sortType: string) => {
+  const handleSortTypeChange = (sortType: SortTypes) => {
     dispatch(sortTypeChange(sortType));
     setIsOpen(false);
   };
@@ -41,15 +43,15 @@ function SortChoice(): JSX.Element {
         </svg>
       </span>
       <ul className={`places__options places__options--custom ${isOpen && 'places__options--opened'}`}>
-        {SortTypes.map((sortType, id) => {
+        {Object.entries(SortTypes).map(([, value], id) => {
           const keyValue = `key-${id}`;
           return (
             <li key={keyValue}
-              className={`places__option ${optionActive === sortType && 'places__option--active'}`}
+              className={`places__option ${optionActive === value && 'places__option--active'}`}
               tabIndex={0}
-              onClick={() => handleSortTypeChange(sortType)}
+              onClick={() => handleSortTypeChange(value)}
             >
-              {sortType}
+              {value}
             </li>);
         })}
       </ul>

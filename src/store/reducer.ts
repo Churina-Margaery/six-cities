@@ -8,6 +8,7 @@ import { AuthorizationStatus } from '../const';
 import { Offers, Offer } from '../types/offers';
 import { Reviews } from '../types/reviews';
 import { Offer as FullOffer } from '../types/separated-offers';
+import { SortTypes } from '../const';
 
 function priceDown(offerA: Offer, offerB: Offer) {
   return offerA.price - offerB.price;
@@ -46,13 +47,13 @@ function cleanFavorites(offers: Offers) {
 
 function sortChange(offers: Offers, type: string, popularOffers: Offers) {
   switch (type) {
-    case 'Price: low to high':
+    case SortTypes.PriceLowToHigh:
       return offers.sort(priceDown);
-    case 'Price: high to low':
+    case SortTypes.PriceHighToLow:
       return offers.sort(priceUp);
-    case 'Top rated first':
+    case SortTypes.RatingTop:
       return offers.sort(ratingUp);
-    case 'Popular':
+    case SortTypes.Popular:
       return popularOffers;
   }
 
@@ -66,7 +67,7 @@ type InitialState = {
   offers: Offers;
   nearbyOffers: Offers;
   favoriteOffers: Offers;
-  activeSort: string;
+  activeSort: SortTypes;
   savedPopularSort: Offers;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
@@ -83,7 +84,7 @@ const initialState: InitialState = {
   offers: [],
   nearbyOffers: [],
   favoriteOffers: getFavorites([]),
-  activeSort: 'Popular',
+  activeSort: SortTypes.Popular,
   savedPopularSort: selectOffers([], 'Paris'),
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
@@ -99,7 +100,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.activeCityName = action.payload;
       state.offersByCity = selectOffers(state.offers, action.payload);
       state.savedPopularSort = state.offersByCity;
-      state.activeSort = 'Popular';
+      state.activeSort = SortTypes.Popular;
     })
     .addCase(favoriteOfferChange, (state, action) => {
       state.offers = toggleFavoriteCard(state.offers, action.payload.id);

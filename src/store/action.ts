@@ -4,12 +4,13 @@ import { AuthorizationStatus } from '../const';
 import { Offers } from '../types/offers';
 import { Offer as FullOffer } from '../types/separated-offers';
 import { Reviews } from '../types/reviews';
+import { SortTypes } from '../const';
 
 export const changeCity = createAction('main/changeCity', (value: string) => ({ payload: value }));
 
 export const favoriteOfferChange = createAction('main/favoriteOfferChange', (value: { id: string }) => ({ payload: value }));
 
-export const sortTypeChange = createAction('main/sortTypeChange', (value: string) => ({ payload: value }));
+export const sortTypeChange = createAction('main/sortTypeChange', (value: SortTypes) => ({ payload: value }));
 
 export const loadOffers = createAction<Offers>('data/loadOffers');
 
