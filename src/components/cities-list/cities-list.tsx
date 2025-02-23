@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { sixCities } from '../../const';
 import { AppRoute } from '../../const';
+import React from 'react';
 
 type CitiesListProps = {
   chosenCity: string;
@@ -34,4 +35,4 @@ function CitiesList({ chosenCity, onCityHover }: CitiesListProps): JSX.Element {
   );
 }
 
-export default CitiesList;
+export default React.memo(CitiesList);

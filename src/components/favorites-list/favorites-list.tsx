@@ -1,6 +1,8 @@
 import { useAppSelector } from '../../hooks';
 import { Offers } from '../../types/offers';
 import SmallCardsList from '../../components/small-cards-list/small-cards-list';
+import { getOffers } from '../../store/data-process/selectors';
+import { getFavoriteOffers } from '../../store/data-process/selectors';
 
 function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
   return (
@@ -21,8 +23,8 @@ function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
 }
 
 function FavoritesList(): JSX.Element {
-  const allOffers = useAppSelector((state) => state.favoriteOffers);
-  const offersFavorite = useAppSelector((state) => state.favoriteOffers);
+  const allOffers = useAppSelector(getOffers);
+  const offersFavorite = useAppSelector(getFavoriteOffers);
 
   const offers = allOffers.filter((offer) =>
     offersFavorite.some((favorite) => favorite.id === offer.id)

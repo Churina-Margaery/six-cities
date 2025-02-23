@@ -1,10 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import { setFavoriteStatusAction } from '../../store/api-actions';
+import React, { useCallback } from 'react';
 
 import { Offer } from '../../types/offers';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { getOfferStatusById } from '../../utils';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getOffers } from '../../store/data-process/selectors';
 
 type ApartmentCardProps = {
   offer: Offer;
@@ -12,19 +15,18 @@ type ApartmentCardProps = {
 
 function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
   const navigate = useNavigate();
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const offers = useAppSelector((state) => state.offers);
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const offers = useAppSelector(getOffers);
   const dispatch = useAppDispatch();
-  let isFav = (getOfferStatusById(offers, offer.id) ? 0 : 1);
-  const handleFavoriteHovers = (id: string) => {
+  const handleFavoriteHovers = useCallback((id: string) => {
     if (authStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
       // todo saving?
     } else {
+      const isFav = (getOfferStatusById(offers, offer.id) ? 0 : 1);
       dispatch(setFavoriteStatusAction({ offerId: id, isFavorite: isFav }));
-      isFav = (isFav === 1) ? 0 : 1;
     }
-  };
+  }, [authStatus, dispatch, navigate, offer.id, offers]);
 
   return (
     <article className="cities__card place-card">
@@ -65,4 +67,4 @@ function ApartmentCard({ offer }: ApartmentCardProps): JSX.Element {
   );
 }
 
-export default ApartmentCard;
+export default React.memo(ApartmentCard);

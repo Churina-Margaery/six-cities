@@ -5,10 +5,10 @@ import { AppDispatch, State } from '../types/state.js';
 import { Offers } from '../types/offers.js';
 import { Offer } from '../types/separated-offers.js';
 import {
-  loadOffers, requireAuthorization, setOffersDataLoadingStatus,
-  fetchOfferData, fetchNearbyOffersData, fetchOfferCommentsData,
-  setEmail, logIn, logOut, favoriteOfferChange
-} from './action';
+  loadOffers, setOffersDataLoadingStatus, fetchOfferData, fetchNearbyOffersData,
+  fetchOfferCommentsData, favoriteOfferChange
+} from './data-process/data-slice.js';
+import { requireAuthorization, setEmail, logIn, logOut } from './user-process/user-slice.js';
 
 import { saveToken, dropToken, getToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
@@ -65,7 +65,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(setEmail(''));
-    dispatch(logOut([]));
+    dispatch(logOut());
   },
 );
 

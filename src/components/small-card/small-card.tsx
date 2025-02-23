@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import { favoriteOfferChange } from '../../store/action';
+import { favoriteOfferChange } from '../../store/data-process/data-slice';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { Offer } from '../../types/offers';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -19,7 +20,7 @@ function Premium(): JSX.Element {
 
 function SmallCard({ offer }: SmallCardProps): JSX.Element {
   const navigate = useNavigate();
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const authStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const handleFavoriteHovers = (id: string) => {
     if (authStatus !== AuthorizationStatus.Auth) {
