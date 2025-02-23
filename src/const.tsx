@@ -27,17 +27,17 @@ enum APIRoute {
   Favorite = '/favorite',
 }
 
-enum NameSpace {
-  Data = 'DATA',
-  Game = 'GAME',
-  User = 'USER',
-}
-
 enum SortTypes {
   Popular = 'Popular',
   PriceLowToHigh = 'Price: low to high',
   PriceHighToLow = 'Price: high to low',
   RatingTop = 'Top rated first',
+}
+
+enum NameSpace {
+  Main = 'main',
+  Data = 'data',
+  User = 'user',
 }
 
 const URL_MARKER_DEFAULT: string = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';

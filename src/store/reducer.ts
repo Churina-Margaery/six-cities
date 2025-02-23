@@ -124,12 +124,12 @@ const reducer = createReducer(initialState, (builder) => {
       state.favoriteOffers = getFavorites(state.offers);
       state.favoritesCount = state.favoriteOffers.length;
     })
-    .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
-    })
-    .addCase(setEmail, (state, action) => {
-      state.userEmail = action.payload;
-    })
+    // .addCase(requireAuthorization, (state, action) => {
+    //   state.authorizationStatus = action.payload;
+    // })
+    // .addCase(setEmail, (state, action) => {
+    //   state.userEmail = action.payload;
+    // })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
@@ -144,21 +144,21 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchOfferCommentsData, (state, action) => {
       state.activeOfferReviews = action.payload;
-    })
-    .addCase(logIn, () => {
-      //state.favoritesCount = action.payload.length;
-    })
+    // })
+    // .addCase(logIn, () => {
+    //   //state.favoritesCount = action.payload.length;
+    // })
     .addCase(logOut, (state) => {
-      state.favoriteOffers = getFavorites([]);
-      state.favoritesCount = 0;
-      state.offers = cleanFavorites(state.offers);
-      state.offersByCity = cleanFavorites(state.offersByCity);
-      state.nearbyOffers = cleanFavorites(state.nearbyOffers);
-      state.savedPopularSort = cleanFavorites(state.savedPopularSort);
-      if (state.activeOffer) {
-        state.activeOffer.isFavorite = false;
-      }
-    });
+        state.favoriteOffers = getFavorites([]);
+        state.favoritesCount = 0;
+        state.offers = cleanFavorites(state.offers);
+        state.offersByCity = cleanFavorites(state.offersByCity);
+        state.nearbyOffers = cleanFavorites(state.nearbyOffers);
+        state.savedPopularSort = cleanFavorites(state.savedPopularSort);
+        if (state.activeOffer) {
+          state.activeOffer.isFavorite = false;
+        }
+      });
 });
 
 export { reducer };
