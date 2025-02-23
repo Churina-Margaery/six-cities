@@ -22,7 +22,7 @@ export type DataState = {
   offers: Offers;
   nearbyOffers: Offers;
   favoriteOffers: Offers;
-  favoritesCount: number; //!!
+  favoritesCount: number;
   isOffersDataLoading: boolean;
   activeOffer: FullOffer | null;
   activeOfferReviews: Reviews;

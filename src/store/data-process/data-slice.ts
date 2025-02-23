@@ -5,8 +5,8 @@ import { NameSpace } from '../../const';
 import { Offer, Offers } from '../../types/offers';
 import { Offer as FullOffer } from '../../types/separated-offers';
 import { Reviews } from '../../types/reviews';
-import { logOut } from '../user-process/user-process';
-import { sortTypeChange } from '../main-process/main-process';
+import { logOut } from '../user-process/user-slice';
+import { sortTypeChange } from '../main-process/main-slice';
 import { SortTypes } from '../../const';
 
 
@@ -69,7 +69,7 @@ const initialState: DataState = {
   savedPopularSort: [],
 };
 
-const dataSlice = createSlice({
+export const dataSlice = createSlice({
   name: NameSpace.Data,
   initialState,
   reducers: {
