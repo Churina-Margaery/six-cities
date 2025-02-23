@@ -3,11 +3,12 @@ import React from 'react';
 
 import { SortTypes } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { sortTypeChange } from '../../store/action';
+import { sortTypeChange } from '../../store/main-process/main-slice';
+import { getActiveSort } from '../../store/main-process/selectors';
 
 
 function SortChoice(): JSX.Element {
-  const optionActive = useAppSelector((state) => state.activeSort);
+  const optionActive = useAppSelector(getActiveSort);
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
 

@@ -17,12 +17,16 @@ import {
   fetchOfferDataAction, fetchNearbyOffersAction, fetchOfferCommentsAction,
   setFavoriteStatusAction
 } from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getActiveOffer } from '../../store/data-process/selectors';
+import { getNearbyOffers } from '../../store/data-process/selectors';
+import { getActiveOfferReviews } from '../../store/data-process/selectors';
 
 
 function OfferScreen(): JSX.Element {
   const navigate = useNavigate();
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  let isFav = (useAppSelector((state) => state.activeOffer?.isFavorite) ? 0 : 1);
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  let isFav = (useAppSelector(getActiveOffer)?.isFavorite) ? 0 : 1;
   const dispatch = useAppDispatch();
   const handleFavoriteHover = (id: string) => {
     if (authStatus !== AuthorizationStatus.Auth) {
@@ -34,9 +38,9 @@ function OfferScreen(): JSX.Element {
     }
   };
   const { offerId } = useParams();
-  const offer = useAppSelector((state) => state.activeOffer);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const reviews = useAppSelector((state) => state.activeOfferReviews);
+  const offer = useAppSelector(getActiveOffer);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const reviews = useAppSelector(getActiveOfferReviews);
 
   const [nearbyOfferSelected, setSelectedOffer] = useState('1');
 

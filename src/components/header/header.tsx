@@ -1,10 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import React from 'react';
 
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks';
-import React from 'react';
+import { getAuthorizationStatus, getUserEmail } from '../../store/user-process/selectors';
+import { getFavoritesCount } from '../../store/data-process/selectors';
 
 type AuthDataProps = {
   authStatus: AuthorizationStatus;
@@ -51,9 +53,9 @@ function AuthData({ authStatus, userEmail, favoritesCount }: AuthDataProps): JSX
 
 function Header(): JSX.Element {
   const navigate = useNavigate();
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const userEmail = useAppSelector((state) => state.userEmail);
-  const favCount = useAppSelector((state) => state.favoritesCount);
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const userEmail = useAppSelector(getUserEmail);
+  const favCount = useAppSelector(getFavoritesCount);
   return (
     <header className="header">
       <div className="container">

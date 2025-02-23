@@ -144,6 +144,7 @@ export const {
   favoriteOfferChange,
   setOffersDataLoadingStatus,
   fetchOfferData,
+  fetchNearbyOffersData,
   fetchOfferCommentsData,
   setError
 } = dataSlice.actions;

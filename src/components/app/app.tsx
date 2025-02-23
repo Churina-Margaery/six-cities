@@ -12,12 +12,15 @@ import { AppRoute } from '../../const';
 import PrivateRoute from '../private-root/private-root';
 import { AuthorizationStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getIsOffersDataLoading } from '../../store/data-process/selectors';
+import { getOffers } from '../../store/data-process/selectors';
 
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(getIsOffersDataLoading);
+  const offers = useAppSelector(getOffers);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (

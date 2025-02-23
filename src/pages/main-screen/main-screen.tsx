@@ -7,7 +7,8 @@ import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCity } from '../../store/action';
+import { changeCity } from '../../store/data-process/data-slice';
+import { getActiveCityName, getOffersByCity } from '../../store/data-process/selectors';
 import SortChoice from '../../components/sort-types/sort-types';
 import { getCityParams, getPluralEnding } from '../../utils';
 import Header from '../../components/header/header';
@@ -37,8 +38,9 @@ type MainScreenProps = {
 function MainScreen({ offers }: MainScreenProps): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState(offers[0]);
   const dispatch = useAppDispatch();
-  const cityName = useAppSelector((state) => state.activeCityName);
-  const offersNum = useAppSelector((state) => state.offersByCity.length);
+  const cityName = useAppSelector(getActiveCityName);
+  const offersNum = useAppSelector(getOffersByCity).length;
+  const offersInCity = useAppSelector(getOffersByCity);
 
   const handleOffersHover = (OfferId: string) => {
     const offerFound = offers.find((offer) =>
@@ -72,7 +74,7 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
               <b className="places__found">{offersNum} {getPluralEnding(offersNum, 'place')} to stay in {cityName}</b>
               <SortChoice />
               <OffersList
-                offers={useAppSelector((state) => state.offersByCity)}
+                offers={offersInCity}
                 onOfferHover={handleOffersHover}
                 classes="cities__places-list places__list tabs__content"
               />
@@ -83,7 +85,7 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
                 'name': cityName,
                 'location': getCityParams(cityName),
               }}
-              offers={useAppSelector((state) => state.offersByCity)}
+              offers={offersInCity}
               selectedPoint={selectedOffer.id}
               block='cities'
             />
