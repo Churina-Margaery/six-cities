@@ -15,10 +15,7 @@ export type UserState = {
 }
 
 export type MainState = {
-  activeCityName: string;
   activeSort: SortTypes;
-  offersByCity: Offers; //!
-  savedPopularSort: Offers;
 }
 
 export type DataState = {
@@ -30,4 +27,8 @@ export type DataState = {
   activeOffer: FullOffer | null;
   activeOfferReviews: Reviews;
   error: string | null;
+
+  activeCityName: string;
+  offersByCity: Offers;
+  savedPopularSort: Offers;
 }
