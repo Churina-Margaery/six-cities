@@ -1,24 +1,27 @@
+import { Link } from 'react-router-dom';
+
 import { useAppSelector } from '../../hooks';
 import { Offers } from '../../types/offers';
 import SmallCardsList from '../../components/small-cards-list/small-cards-list';
 import { getOffers } from '../../store/data-process/selectors';
 import { getFavoriteOffers } from '../../store/data-process/selectors';
+import { AppRoute } from '../../const';
 
 function FavoritesLocations(offers: Offers, cityName: string): JSX.Element {
   return (
     <div className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
-          <a className="locations__item-link" href="#">
+          <Link className="locations__item-link" to={AppRoute.Root}>
             <span>{cityName}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <SmallCardsList
         offers={offers}
         cityName={cityName}
       />
-    </div>
+    </div >
   );
 }
 
