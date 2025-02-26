@@ -7,6 +7,12 @@ type ReviewProps = {
 }
 
 function ReviewItem({ review }: ReviewProps): JSX.Element {
+  const reviewDate = new Date(review.date);
+  const formattedDate = reviewDate.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <React.Fragment>
       <div className="reviews__user user">
@@ -27,7 +33,7 @@ function ReviewItem({ review }: ReviewProps): JSX.Element {
         <p className="reviews__text">
           {review.comment}
         </p>
-        <time className="reviews__time" dateTime="2019-04-24">{review.date}</time>
+        <time className="reviews__time" dateTime="2019-04-24">{formattedDate}</time>
       </div>
     </React.Fragment>
   );

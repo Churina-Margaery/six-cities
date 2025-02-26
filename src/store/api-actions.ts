@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
 
@@ -44,13 +44,24 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   extra: AxiosInstance;
 }>(
   'user/login',
-  async ({ email: email, password }, { dispatch, extra: api }) => {
-    const { data: { token } } = await api.post<UserData>(APIRoute.Login, { email, password });
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(setEmail(email));
-    dispatch(fetchOffersAction());
-    dispatch(logIn());
+  async ({ email, password }, { dispatch, extra: api, rejectWithValue }) => {
+    try {
+      const { data: { token } } = await api.post<UserData>(APIRoute.Login, { email, password });
+      saveToken(token);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(setEmail(email));
+      dispatch(fetchOffersAction());
+      dispatch(logIn());
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        // Можно добавить обработку разных статус-кодов
+        const errorMessage = err.response?.status === 400
+          ? 'Неверный email или пароль'
+          : 'Ошибка сервера';
+        return rejectWithValue(errorMessage);
+      }
+      return rejectWithValue('Неизвестная ошибка');
+    }
   },
 );
 
@@ -147,11 +158,21 @@ export const postCommentAction = createAsyncThunk<void, {
   extra: AxiosInstance;
 }>(
   'data/postComment',
-  async ({ offerId, rating, comment }, { dispatch, extra: api }) => {
-    await api.post<Comment>(
-      `${APIRoute.Comments}/${offerId}`,
-      { comment, rating }
-    );
-    dispatch(fetchOfferCommentsAction(offerId));
+  async ({ offerId, rating, comment }, { dispatch, extra: api, rejectWithValue }) => {
+    try {
+      await api.post<Comment>(
+        `${APIRoute.Comments}/${offerId}`,
+        { comment, rating }
+      );
+      dispatch(fetchOfferCommentsAction(offerId));
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.status === 400
+          ? 'Неверные данные отзыва'
+          : 'Ошибка при отправке отзыва';
+        return rejectWithValue(errorMessage);
+      }
+      return rejectWithValue('Неизвестная ошибка');
+    }
   },
 );

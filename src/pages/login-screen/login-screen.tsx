@@ -1,6 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useRef, FormEvent } from 'react';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
@@ -19,9 +22,14 @@ function LoginScreen(): JSX.Element {
       dispatch(loginAction({
         email: loginRef.current.value,
         password: passwordRef.current.value
-      }));
+      }))
+        .unwrap()
+        .catch(() => {
+          toast.error('Ошибка авторизации');
+        });
     }
   };
+
 
   return (
     <div className="page page--gray page--login">
@@ -41,6 +49,11 @@ function LoginScreen(): JSX.Element {
       </header>
 
       <main className="page__main page__main--login">
+        <ToastContainer
+          autoClose={5000}
+          position="top-right"
+          hideProgressBar={false}
+        />
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
@@ -76,9 +89,9 @@ function LoginScreen(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
+              <Link className="locations__item-link" to={AppRoute.Root}>
                 <span>Amsterdam</span>
-              </a>
+              </Link>
             </div>
           </section>
         </div>

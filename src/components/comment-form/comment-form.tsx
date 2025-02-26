@@ -1,5 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { Fragment } from 'react';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { postCommentAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks';
@@ -25,14 +28,23 @@ function CommentForm({ offerId }: CommentFormProps): JSX.Element {
         rating: userReview.rating,
         comment: userReview.review
       }))
+        .unwrap()
         .then(() => {
           setUserReview((prevState) => ({ ...prevState, review: '', rating: 0 }));
+        })
+        .catch(() => {
+          toast.error('Не удалось отправить отзыв');
         });
     }
   };
 
   return (
     <form className="reviews__form form" onSubmit={handleSubmit} >
+      <ToastContainer
+        autoClose={5000}
+        position="top-right"
+        hideProgressBar={false}
+      />
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
       <div className="reviews__rating-form form__rating">

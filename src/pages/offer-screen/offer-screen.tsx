@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import LoadingScreen from '../loading-screen/loading-screen';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
@@ -68,7 +69,7 @@ function OfferScreen(): JSX.Element {
   }
 
   if (!offer) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   return (
