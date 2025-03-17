@@ -2,7 +2,7 @@
   "name": "six-cities",
   "version": "14.0.0",
   "type": "module",
-  "homepage": "https://Churina-Margaery.github.io/six-cities",
+  "homepage": "https://Churina-Margaery.github.io/six-cities/",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
